@@ -5,6 +5,7 @@
   },
   "nav": {
     "login": "Log in",
+    "signup": "Sign up",
     "logout": "Log out",
     "dashboard": "Dashboard",
     "roadmaps": "Roadmaps",
@@ -22,16 +23,59 @@
       "ai": { "title": "AI coach", "body": "Weekly insights, praise when you're ahead, advice when you fall behind." }
     }
   },
-  "login": {
-    "title": "Welcome back",
-    "subtitle": "We'll email you a magic link to sign in. No password needed.",
-    "emailLabel": "Email",
+  "auth": {
+    "name": "Your name",
+    "namePlaceholder": "e.g. Thanh",
+    "email": "Email",
     "emailPlaceholder": "you@example.com",
-    "submit": "Send magic link",
-    "sending": "Sending…",
-    "sent": "Check your inbox! Click the link in the email to sign in.",
-    "invalidEmail": "Please enter a valid email address.",
-    "error": "Something went wrong. Please try again."
+    "password": "Password",
+    "newPassword": "New password",
+    "passwordHint": "At least 8 characters",
+    "confirmPassword": "Confirm password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "pending": "Please wait…",
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Log in to continue your learning journey.",
+      "submit": "Log in",
+      "forgot": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Create one"
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Start building your English roadmap in under a minute.",
+      "submit": "Create account",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Log in"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we'll send you a link to set a new password.",
+      "submit": "Send reset link",
+      "back": "Back to log in"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "subtitle": "Choose a new password for your account.",
+      "submit": "Save new password"
+    },
+    "notices": {
+      "checkEmail": "Account created! Check your inbox to confirm your email, then log in.",
+      "resetSent": "If an account exists for that email, a reset link is on its way. Check your inbox."
+    },
+    "errors": {
+      "invalid": "Please check your email and password.",
+      "invalidCredentials": "Incorrect email or password.",
+      "emailTaken": "This email is already registered. Try logging in instead.",
+      "weakPassword": "Password must be at least 8 characters.",
+      "passwordMismatch": "Passwords don't match.",
+      "emailNotConfirmed": "Please confirm your email first. Check your inbox.",
+      "rateLimited": "Too many attempts. Please wait a minute and try again.",
+      "sessionExpired": "Your reset link has expired. Please request a new one.",
+      "server": "Something went wrong. Please try again."
+    }
   },
   "dashboard": {
     "greeting": "Hello",

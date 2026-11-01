@@ -5,6 +5,7 @@
   },
   "nav": {
     "login": "Đăng nhập",
+    "signup": "Đăng ký",
     "logout": "Đăng xuất",
     "dashboard": "Bảng điều khiển",
     "roadmaps": "Lộ trình",
@@ -22,16 +23,59 @@
       "ai": { "title": "Huấn luyện viên AI", "body": "Báo cáo hằng tuần, khen khi bạn vượt mục tiêu, góp ý khi chậm tiến độ." }
     }
   },
-  "login": {
-    "title": "Chào mừng trở lại",
-    "subtitle": "Chúng tôi sẽ gửi link đăng nhập qua email. Không cần mật khẩu.",
-    "emailLabel": "Email",
+  "auth": {
+    "name": "Tên của bạn",
+    "namePlaceholder": "VD: Thành",
+    "email": "Email",
     "emailPlaceholder": "ban@example.com",
-    "submit": "Gửi link đăng nhập",
-    "sending": "Đang gửi…",
-    "sent": "Kiểm tra hộp thư! Bấm vào link trong email để đăng nhập.",
-    "invalidEmail": "Vui lòng nhập email hợp lệ.",
-    "error": "Đã có lỗi xảy ra. Vui lòng thử lại."
+    "password": "Mật khẩu",
+    "newPassword": "Mật khẩu mới",
+    "passwordHint": "Tối thiểu 8 ký tự",
+    "confirmPassword": "Nhập lại mật khẩu",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu",
+    "pending": "Vui lòng chờ…",
+    "login": {
+      "title": "Chào mừng trở lại",
+      "subtitle": "Đăng nhập để tiếp tục hành trình học tập.",
+      "submit": "Đăng nhập",
+      "forgot": "Quên mật khẩu?",
+      "noAccount": "Chưa có tài khoản?",
+      "signupLink": "Tạo tài khoản"
+    },
+    "signup": {
+      "title": "Tạo tài khoản",
+      "subtitle": "Bắt đầu xây dựng lộ trình tiếng Anh chỉ trong một phút.",
+      "submit": "Tạo tài khoản",
+      "hasAccount": "Đã có tài khoản?",
+      "loginLink": "Đăng nhập"
+    },
+    "forgot": {
+      "title": "Đặt lại mật khẩu",
+      "subtitle": "Nhập email, chúng tôi sẽ gửi link để bạn đặt mật khẩu mới.",
+      "submit": "Gửi link đặt lại",
+      "back": "Quay lại đăng nhập"
+    },
+    "reset": {
+      "title": "Đặt mật khẩu mới",
+      "subtitle": "Chọn mật khẩu mới cho tài khoản của bạn.",
+      "submit": "Lưu mật khẩu mới"
+    },
+    "notices": {
+      "checkEmail": "Đã tạo tài khoản! Kiểm tra hộp thư để xác nhận email, sau đó đăng nhập.",
+      "resetSent": "Nếu email này đã đăng ký, link đặt lại mật khẩu đang được gửi tới. Hãy kiểm tra hộp thư."
+    },
+    "errors": {
+      "invalid": "Vui lòng kiểm tra lại email và mật khẩu.",
+      "invalidCredentials": "Email hoặc mật khẩu không đúng.",
+      "emailTaken": "Email này đã được đăng ký. Hãy thử đăng nhập.",
+      "weakPassword": "Mật khẩu phải có ít nhất 8 ký tự.",
+      "passwordMismatch": "Mật khẩu nhập lại không khớp.",
+      "emailNotConfirmed": "Vui lòng xác nhận email trước. Hãy kiểm tra hộp thư.",
+      "rateLimited": "Thử quá nhiều lần. Vui lòng đợi một phút rồi thử lại.",
+      "sessionExpired": "Link đặt lại đã hết hạn. Vui lòng yêu cầu link mới.",
+      "server": "Đã có lỗi xảy ra. Vui lòng thử lại."
+    }
   },
   "dashboard": {
     "greeting": "Xin chào",

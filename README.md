@@ -5,7 +5,7 @@ A personal, roadmap-based English learning app: build a learning roadmap, get re
 ## Stack
 
 - **Next.js 16** (App Router, Cache Components, `proxy.ts`) + TypeScript + Tailwind CSS v4
-- **Supabase** – Postgres + Auth (magic link)
+- **Supabase** – Postgres + Auth (email + password)
 - **Drizzle ORM** – schema & migrations
 - i18n via `app/[lang]` routes + JSON dictionaries (`src/i18n`)
 
@@ -34,7 +34,8 @@ src/
     [lang]/              # every page lives under /vi or /en
       layout.tsx         # root layout (html lang, fonts)
       page.tsx           # landing page
-      login/             # magic-link login (server action)
+      login/ signup/      # email + password auth (server actions)
+      forgot-password/ reset-password/  # password reset flow
       dashboard/         # protected page (session streamed behind Suspense)
     auth/callback/       # exchanges the magic-link code for a session
   components/            # SiteHeader, LanguageToggle
