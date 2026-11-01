@@ -16,7 +16,7 @@ npm install
 cp .env.example .env.local   # then fill in the values
 npm run db:generate          # create SQL migration from src/db/schema.ts
 npm run db:migrate           # apply it to Supabase
-# then run supabase/policies.sql in the Supabase SQL Editor (auth trigger + RLS)
+# then run supabase/policies.sql, then supabase/02_link_auth_users.sql in the Supabase SQL Editor
 npm run dev                  # http://localhost:3000
 ```
 
