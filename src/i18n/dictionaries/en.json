@@ -9,7 +9,10 @@
     "logout": "Log out",
     "dashboard": "Dashboard",
     "roadmaps": "Roadmaps",
-    "language": "Language"
+    "language": "Language",
+    "profile": "Profile",
+    "openApp": "Go to dashboard",
+    "menu": "Account menu"
   },
   "home": {
     "badge": "Roadmap-based learning",
@@ -17,10 +20,22 @@
     "subhead": "Build a learning roadmap, get reminded when it's study time, check off lessons, and let AI coach you along the way.",
     "cta": "Get started",
     "features": {
-      "roadmap": { "title": "Learning roadmap", "body": "Split your goal into phases and bite-sized lessons." },
-      "checkoff": { "title": "Check off lessons", "body": "Tick a lesson when you finish and watch your progress grow." },
-      "reminders": { "title": "Smart reminders", "body": "Push and email reminders right before study time." },
-      "ai": { "title": "AI coach", "body": "Weekly insights, praise when you're ahead, advice when you fall behind." }
+      "roadmap": {
+        "title": "Learning roadmap",
+        "body": "Split your goal into phases and bite-sized lessons."
+      },
+      "checkoff": {
+        "title": "Check off lessons",
+        "body": "Tick a lesson when you finish and watch your progress grow."
+      },
+      "reminders": {
+        "title": "Smart reminders",
+        "body": "Push and email reminders right before study time."
+      },
+      "ai": {
+        "title": "AI coach",
+        "body": "Weekly insights, praise when you're ahead, advice when you fall behind."
+      }
     }
   },
   "auth": {
@@ -140,5 +155,29 @@
       "links": "{n} links"
     },
     "saveError": "Couldn't save the change. Please try again."
+  },
+  "profile": {
+    "title": "Your profile",
+    "subtitle": "This is how you appear in English for me.",
+    "avatar": "Avatar",
+    "changeAvatar": "Change photo",
+    "removeAvatar": "Remove",
+    "uploading": "Uploading…",
+    "avatarHint": "JPG, PNG or WebP. We crop it to a square.",
+    "displayName": "Display name",
+    "displayNameHint": "Shown in the menu and greetings. Leave empty to use your full name.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "emailHint": "Email can't be changed yet.",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "saved": "Profile saved.",
+    "errors": {
+      "invalid": "Please check the fields (max 60 characters each).",
+      "avatar": "Couldn't upload this image. Try another JPG/PNG/WebP file.",
+      "server": "Something went wrong. Please try again.",
+      "notImage": "Please choose an image file."
+    }
   }
 }

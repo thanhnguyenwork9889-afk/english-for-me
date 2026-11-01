@@ -1,6 +1,32 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { SiteHeader } from "@/components/site-header";
-import { getDictionary, getLocale } from "@/i18n/get-dictionary";
+import type { Locale } from "@/i18n/config";
+import { getDictionary, getLocale, type Dictionary } from "@/i18n/get-dictionary";
+import { getUserId } from "@/lib/auth";
+
+const pillCls =
+  "inline-flex h-8 items-center rounded-full bg-indigo-600 px-3 text-sm font-semibold text-white hover:bg-indigo-500";
+
+async function HeaderAuthLinks({ locale, nav }: { locale: Locale; nav: Dictionary["nav"] }) {
+  if (await getUserId()) {
+    return (
+      <Link href={`/${locale}/dashboard`} className={pillCls}>
+        {nav.openApp} →
+      </Link>
+    );
+  }
+  return (
+    <>
+      <Link href={`/${locale}/login`} className="text-sm font-medium hover:underline">
+        {nav.login}
+      </Link>
+      <Link href={`/${locale}/signup`} className={`${pillCls} hidden sm:inline-flex`}>
+        {nav.signup}
+      </Link>
+    </>
+  );
+}
 
 const featureKeys = ["roadmap", "checkoff", "reminders", "ai"] as const;
 const featureIcons = { roadmap: "🗺️", checkoff: "✅", reminders: "⏰", ai: "🤖" } as const;
@@ -12,15 +38,10 @@ export default async function HomePage() {
   return (
     <>
       <SiteHeader>
-        <Link href={`/${locale}/login`} className="text-sm font-medium hover:underline">
-          {dict.nav.login}
-        </Link>
-        <Link
-          href={`/${locale}/signup`}
-          className="hidden h-8 items-center rounded-full bg-indigo-600 px-3 text-sm font-semibold text-white hover:bg-indigo-500 sm:inline-flex"
-        >
-          {dict.nav.signup}
-        </Link>
+        {/* Knows whether you're signed in, so it streams in per request. */}
+        <Suspense fallback={<span className="h-8 w-28" />}>
+          <HeaderAuthLinks locale={locale} nav={dict.nav} />
+        </Suspense>
       </SiteHeader>
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-16 sm:py-24">

@@ -24,6 +24,8 @@ export const users = pgTable("users", {
   id: uuid("id").primaryKey(),
   email: text("email").notNull().unique(),
   displayName: text("display_name"),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
   avatarUrl: text("avatar_url"),
   createdAt: createdAt(),
 });

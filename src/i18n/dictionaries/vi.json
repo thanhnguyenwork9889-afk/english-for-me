@@ -9,7 +9,10 @@
     "logout": "Đăng xuất",
     "dashboard": "Bảng điều khiển",
     "roadmaps": "Lộ trình",
-    "language": "Ngôn ngữ"
+    "language": "Ngôn ngữ",
+    "profile": "Hồ sơ",
+    "openApp": "Vào Dashboard",
+    "menu": "Menu tài khoản"
   },
   "home": {
     "badge": "Học theo lộ trình",
@@ -17,10 +20,22 @@
     "subhead": "Tạo lộ trình học, nhận nhắc nhở khi đến giờ học, đánh dấu bài đã hoàn thành và để AI đồng hành cùng bạn.",
     "cta": "Bắt đầu ngay",
     "features": {
-      "roadmap": { "title": "Lộ trình học tập", "body": "Chia mục tiêu thành các giai đoạn và bài học nhỏ." },
-      "checkoff": { "title": "Đánh dấu hoàn thành", "body": "Tick bài học khi xong và theo dõi tiến độ tăng dần." },
-      "reminders": { "title": "Nhắc nhở thông minh", "body": "Thông báo đẩy và email ngay trước giờ học." },
-      "ai": { "title": "Huấn luyện viên AI", "body": "Báo cáo hằng tuần, khen khi bạn vượt mục tiêu, góp ý khi chậm tiến độ." }
+      "roadmap": {
+        "title": "Lộ trình học tập",
+        "body": "Chia mục tiêu thành các giai đoạn và bài học nhỏ."
+      },
+      "checkoff": {
+        "title": "Đánh dấu hoàn thành",
+        "body": "Tick bài học khi xong và theo dõi tiến độ tăng dần."
+      },
+      "reminders": {
+        "title": "Nhắc nhở thông minh",
+        "body": "Thông báo đẩy và email ngay trước giờ học."
+      },
+      "ai": {
+        "title": "Huấn luyện viên AI",
+        "body": "Báo cáo hằng tuần, khen khi bạn vượt mục tiêu, góp ý khi chậm tiến độ."
+      }
     }
   },
   "auth": {
@@ -140,5 +155,29 @@
       "links": "{n} link"
     },
     "saveError": "Không lưu được thay đổi. Vui lòng thử lại."
+  },
+  "profile": {
+    "title": "Hồ sơ của bạn",
+    "subtitle": "Thông tin hiển thị của bạn trong English for me.",
+    "avatar": "Ảnh đại diện",
+    "changeAvatar": "Đổi ảnh",
+    "removeAvatar": "Xoá",
+    "uploading": "Đang tải lên…",
+    "avatarHint": "JPG, PNG hoặc WebP. Ảnh sẽ được cắt vuông.",
+    "displayName": "Tên hiển thị",
+    "displayNameHint": "Hiện trên menu và lời chào. Để trống sẽ dùng họ tên đầy đủ.",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "email": "Email",
+    "emailHint": "Hiện chưa thể đổi email.",
+    "save": "Lưu thay đổi",
+    "saving": "Đang lưu…",
+    "saved": "Đã lưu hồ sơ.",
+    "errors": {
+      "invalid": "Vui lòng kiểm tra lại (mỗi ô tối đa 60 ký tự).",
+      "avatar": "Không tải được ảnh này. Hãy thử ảnh JPG/PNG/WebP khác.",
+      "server": "Đã có lỗi xảy ra. Vui lòng thử lại.",
+      "notImage": "Vui lòng chọn một tệp ảnh."
+    }
   }
 }
