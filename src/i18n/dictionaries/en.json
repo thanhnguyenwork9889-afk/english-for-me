@@ -74,6 +74,9 @@
       "emailNotConfirmed": "Please confirm your email first. Check your inbox.",
       "rateLimited": "Too many attempts. Please wait a minute and try again.",
       "sessionExpired": "Your reset link has expired. Please request a new one.",
+      "emailInvalid": "This email address isn't accepted. Please use a real email.",
+      "signupDisabled": "Sign-ups are currently disabled.",
+      "emailSendFailed": "We couldn't send the confirmation email. Please try again later.",
       "server": "Something went wrong. Please try again."
     }
   },

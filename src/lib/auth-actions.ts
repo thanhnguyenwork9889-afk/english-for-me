@@ -15,6 +15,9 @@ export type AuthError =
   | "emailNotConfirmed"
   | "rateLimited"
   | "sessionExpired"
+  | "emailInvalid"
+  | "signupDisabled"
+  | "emailSendFailed"
   | "server";
 
 export type AuthState = { error?: AuthError; notice?: "checkEmail" | "resetSent" };
@@ -33,8 +36,18 @@ async function siteOrigin() {
 }
 
 /** Map Supabase auth error codes to our UI error keys. */
-function mapError(code: string | undefined, fallback: AuthError = "server"): AuthError {
+function mapError(code: string | undefined, fallback: AuthError = "server", detail?: unknown): AuthError {
+  if (detail) console.error("[auth]", code, detail instanceof Error ? detail.message : detail);
+  // Supabase's built-in mailer only delivers to project team members, a few emails per hour.
+  if (code === "email_address_not_authorized" || /sending .*email/i.test(String((detail as Error)?.message ?? ""))) {
+    return "emailSendFailed";
+  }
   switch (code) {
+    case "email_address_invalid":
+      return "emailInvalid";
+    case "signup_disabled":
+    case "email_provider_disabled":
+      return "signupDisabled";
     case "invalid_credentials":
       return "invalidCredentials";
     case "user_already_exists":
@@ -64,7 +77,7 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
-  if (error) return { error: mapError(error.code, "invalidCredentials") };
+  if (error) return { error: mapError(error.code, "invalidCredentials", error) };
 
   redirect(`/${lang}/dashboard`);
 }
@@ -99,7 +112,7 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
       emailRedirectTo: `${await siteOrigin()}/auth/callback?next=/${lang}/dashboard`,
     },
   });
-  if (error) return { error: mapError(error.code) };
+  if (error) return { error: mapError(error.code, "server", error) };
 
   // "Confirm email" disabled in Supabase → we get a session immediately.
   if (data.session) redirect(`/${lang}/dashboard`);
@@ -136,7 +149,7 @@ export async function updatePassword(_prev: AuthState, formData: FormData): Prom
   if (error) {
     // No session = the reset link was never opened or has expired.
     if (error.name === "AuthSessionMissingError") return { error: "sessionExpired" };
-    return { error: mapError(error.code) };
+    return { error: mapError(error.code, "server", error) };
   }
 
   redirect(`/${lang}/dashboard`);

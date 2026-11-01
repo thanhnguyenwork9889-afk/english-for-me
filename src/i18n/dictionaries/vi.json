@@ -74,6 +74,9 @@
       "emailNotConfirmed": "Vui lòng xác nhận email trước. Hãy kiểm tra hộp thư.",
       "rateLimited": "Thử quá nhiều lần. Vui lòng đợi một phút rồi thử lại.",
       "sessionExpired": "Link đặt lại đã hết hạn. Vui lòng yêu cầu link mới.",
+      "emailInvalid": "Địa chỉ email này không được chấp nhận. Vui lòng dùng email thật.",
+      "signupDisabled": "Hiện đang tạm khoá đăng ký tài khoản mới.",
+      "emailSendFailed": "Không gửi được email xác nhận. Vui lòng thử lại sau.",
       "server": "Đã có lỗi xảy ra. Vui lòng thử lại."
     }
   },
