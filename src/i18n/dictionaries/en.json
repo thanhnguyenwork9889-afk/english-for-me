@@ -7,6 +7,7 @@
     "login": "Log in",
     "logout": "Log out",
     "dashboard": "Dashboard",
+    "roadmaps": "Roadmaps",
     "language": "Language"
   },
   "home": {
@@ -35,6 +36,62 @@
   "dashboard": {
     "greeting": "Hello",
     "loading": "Loading your dashboard…",
-    "empty": "You don't have any roadmaps yet. Roadmap creation is coming in Phase 1."
+    "empty": "You don't have any roadmaps yet.",
+    "yourRoadmaps": "Your roadmaps",
+    "viewAll": "View all"
+  },
+  "roadmaps": {
+    "title": "My roadmaps",
+    "subtitle": "Plan your learning journey phase by phase.",
+    "new": "New roadmap",
+    "empty": "No roadmaps yet. Create your first one!",
+    "loading": "Loading…",
+    "back": "All roadmaps",
+    "lessons": "{n} lessons",
+    "hours": "{h} h",
+    "started": "Started {date}",
+    "deadline": "Deadline {date}",
+    "noDeadline": "No deadline",
+    "perWeek": "≈ {h} h/week needed to finish on time",
+    "overdue": "Deadline has passed",
+    "form": {
+      "title": "Roadmap title",
+      "titlePlaceholder": "e.g. IELTS 6.5 in 3 months",
+      "goal": "Goal (optional)",
+      "goalPlaceholder": "Why are you learning? e.g. Study abroad",
+      "startDate": "Start date",
+      "targetDate": "Deadline (optional)",
+      "create": "Create roadmap",
+      "creating": "Creating…",
+      "save": "Save",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "invalid": "Please check the fields. The deadline must be after the start date.",
+      "error": "Couldn't save. Please try again."
+    },
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDeleteRoadmap": "Delete this roadmap and all its phases and lessons? This cannot be undone.",
+    "addPhase": "Add phase",
+    "phasePlaceholder": "Phase name, e.g. Foundations: Grammar",
+    "confirmDeletePhase": "Delete this phase and all its lessons?",
+    "addLesson": "Add lesson",
+    "lessonPlaceholder": "Lesson title, e.g. Present perfect tense",
+    "noLessons": "No lessons yet. Add one or drag a lesson here.",
+    "noPhases": "Start by adding your first phase.",
+    "confirmDeleteLesson": "Delete this lesson?",
+    "minutes": "min",
+    "dragHandle": "Drag to reorder",
+    "rename": "Rename",
+    "lesson": {
+      "editTitle": "Edit lesson",
+      "title": "Title",
+      "estimatedMinutes": "Estimated minutes",
+      "resources": "Resource links (one URL per line)",
+      "notes": "Notes",
+      "notesPlaceholder": "Key points, vocabulary, what to practise…",
+      "links": "{n} links"
+    },
+    "saveError": "Couldn't save the change. Please try again."
   }
 }

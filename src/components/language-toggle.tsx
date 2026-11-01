@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { LOCALE_COOKIE, locales, switchLocalePath, type Locale } from "@/i18n/config";
 
@@ -12,14 +12,15 @@ function persistLocale(locale: Locale) {
 }
 
 export function LanguageToggle({ current, label }: { current: Locale; label: string }) {
-  const pathname = usePathname();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
   function choose(next: Locale) {
     if (next === current) return;
     persistLocale(next);
-    startTransition(() => router.push(switchLocalePath(pathname, next)));
+    // Read the path at click time (not via usePathname) so the header stays prerenderable on dynamic routes.
+    const { pathname, search } = window.location;
+    startTransition(() => router.push(switchLocalePath(pathname, next) + search));
   }
 
   return (

@@ -7,6 +7,7 @@
     "login": "Đăng nhập",
     "logout": "Đăng xuất",
     "dashboard": "Bảng điều khiển",
+    "roadmaps": "Lộ trình",
     "language": "Ngôn ngữ"
   },
   "home": {
@@ -35,6 +36,62 @@
   "dashboard": {
     "greeting": "Xin chào",
     "loading": "Đang tải bảng điều khiển…",
-    "empty": "Bạn chưa có lộ trình nào. Tính năng tạo lộ trình sẽ có ở Phase 1."
+    "empty": "Bạn chưa có lộ trình nào.",
+    "yourRoadmaps": "Lộ trình của bạn",
+    "viewAll": "Xem tất cả"
+  },
+  "roadmaps": {
+    "title": "Lộ trình của tôi",
+    "subtitle": "Lên kế hoạch học tập theo từng giai đoạn.",
+    "new": "Tạo lộ trình",
+    "empty": "Chưa có lộ trình nào. Hãy tạo lộ trình đầu tiên!",
+    "loading": "Đang tải…",
+    "back": "Tất cả lộ trình",
+    "lessons": "{n} bài học",
+    "hours": "{h} giờ",
+    "started": "Bắt đầu {date}",
+    "deadline": "Hạn chót {date}",
+    "noDeadline": "Không có hạn chót",
+    "perWeek": "≈ {h} giờ/tuần để kịp hạn chót",
+    "overdue": "Đã quá hạn chót",
+    "form": {
+      "title": "Tên lộ trình",
+      "titlePlaceholder": "VD: IELTS 6.5 trong 3 tháng",
+      "goal": "Mục tiêu (tuỳ chọn)",
+      "goalPlaceholder": "Vì sao bạn học? VD: Đi du học",
+      "startDate": "Ngày bắt đầu",
+      "targetDate": "Hạn chót (tuỳ chọn)",
+      "create": "Tạo lộ trình",
+      "creating": "Đang tạo…",
+      "save": "Lưu",
+      "saving": "Đang lưu…",
+      "cancel": "Huỷ",
+      "invalid": "Vui lòng kiểm tra lại thông tin. Hạn chót phải sau ngày bắt đầu.",
+      "error": "Không lưu được. Vui lòng thử lại."
+    },
+    "edit": "Sửa",
+    "delete": "Xoá",
+    "confirmDeleteRoadmap": "Xoá lộ trình này cùng toàn bộ giai đoạn và bài học? Không thể hoàn tác.",
+    "addPhase": "Thêm giai đoạn",
+    "phasePlaceholder": "Tên giai đoạn, VD: Nền tảng: Ngữ pháp",
+    "confirmDeletePhase": "Xoá giai đoạn này cùng toàn bộ bài học?",
+    "addLesson": "Thêm bài học",
+    "lessonPlaceholder": "Tên bài học, VD: Thì hiện tại hoàn thành",
+    "noLessons": "Chưa có bài học. Thêm mới hoặc kéo bài học vào đây.",
+    "noPhases": "Bắt đầu bằng cách thêm giai đoạn đầu tiên.",
+    "confirmDeleteLesson": "Xoá bài học này?",
+    "minutes": "phút",
+    "dragHandle": "Kéo để sắp xếp",
+    "rename": "Đổi tên",
+    "lesson": {
+      "editTitle": "Sửa bài học",
+      "title": "Tiêu đề",
+      "estimatedMinutes": "Thời lượng ước tính (phút)",
+      "resources": "Link tài liệu (mỗi dòng một URL)",
+      "notes": "Ghi chú",
+      "notesPlaceholder": "Ý chính, từ vựng, nội dung cần luyện…",
+      "links": "{n} link"
+    },
+    "saveError": "Không lưu được thay đổi. Vui lòng thử lại."
   }
 }

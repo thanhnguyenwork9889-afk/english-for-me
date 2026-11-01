@@ -1,49 +1,45 @@
+import Link from "next/link";
 import { Suspense } from "react";
-import { redirect } from "next/navigation";
-import { SiteHeader } from "@/components/site-header";
-import { getDictionary, getLocale } from "@/i18n/get-dictionary";
-import type { Dictionary } from "@/i18n/get-dictionary";
+import { AppHeader } from "@/components/app-header";
+import { RoadmapCards } from "@/components/roadmaps/roadmap-cards";
 import type { Locale } from "@/i18n/config";
-import { createClient } from "@/lib/supabase/server";
-import { signOut } from "./actions";
+import { getDictionary, getLocale, type Dictionary } from "@/i18n/get-dictionary";
+import { getUserEmail, requireUserId } from "@/lib/auth";
+import { listRoadmaps } from "@/lib/roadmaps/queries";
 
 export default async function DashboardPage() {
   const [locale, dict] = await Promise.all([getLocale(), getDictionary()]);
 
   return (
     <>
-      <SiteHeader>
-        <form action={signOut}>
-          <input type="hidden" name="lang" value={locale} />
-          <button type="submit" className="text-sm font-medium hover:underline">
-            {dict.nav.logout}
-          </button>
-        </form>
-      </SiteHeader>
+      <AppHeader />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
         {/* Session read happens at request time, so it streams behind Suspense. */}
         <Suspense fallback={<p className="text-zinc-500">{dict.dashboard.loading}</p>}>
-          <UserDashboard locale={locale} t={dict.dashboard} />
+          <UserDashboard locale={locale} dict={dict} />
         </Suspense>
       </main>
     </>
   );
 }
 
-async function UserDashboard({ locale, t }: { locale: Locale; t: Dictionary["dashboard"] }) {
-  const supabase = await createClient();
-  const { data } = await supabase.auth.getClaims();
-  const email = data?.claims?.email as string | undefined;
-  if (!data?.claims) redirect(`/${locale}/login`);
+async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const userId = await requireUserId(locale);
+  const [email, roadmaps] = await Promise.all([getUserEmail(), listRoadmaps(userId)]);
+  const t = dict.dashboard;
 
   return (
     <section>
       <h1 className="text-2xl font-bold">
         {t.greeting}, {email ?? "👋"}
       </h1>
-      <div className="mt-6 rounded-2xl border border-dashed border-black/10 p-8 text-center text-zinc-500 dark:border-white/15">
-        {t.empty}
+      <div className="mt-8 mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold">{t.yourRoadmaps}</h2>
+        <Link href={`/${locale}/roadmaps`} className="text-sm font-medium text-indigo-600 hover:underline">
+          {roadmaps.length ? t.viewAll : `+ ${dict.roadmaps.new}`}
+        </Link>
       </div>
+      <RoadmapCards roadmaps={roadmaps.slice(0, 4)} locale={locale} t={dict.roadmaps} />
     </section>
   );
 }

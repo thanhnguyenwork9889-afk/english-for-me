@@ -48,7 +48,7 @@ supabase/policies.sql    # auth → users trigger + Row Level Security
 ## Roadmap
 
 - [x] Phase 0 – setup, auth, bilingual UI, DB schema
-- [ ] Phase 1 – roadmap / phase / lesson CRUD + drag & drop
+- [x] Phase 1 – roadmap / phase / lesson CRUD + drag & drop
 - [ ] Phase 2 – lesson check-off, progress, streak
 - [ ] Phase 3 – scheduling + push/email reminders
 - [ ] Phase 4 – progress dashboard & charts
