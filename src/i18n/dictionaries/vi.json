@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "English for me",
+    "description": "Người bạn đồng hành học tiếng Anh cá nhân theo lộ trình."
+  },
+  "nav": {
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "dashboard": "Bảng điều khiển",
+    "language": "Ngôn ngữ"
+  },
+  "home": {
+    "badge": "Học theo lộ trình",
+    "headline": "Học tiếng Anh từng bước, theo lịch của riêng bạn.",
+    "subhead": "Tạo lộ trình học, nhận nhắc nhở khi đến giờ học, đánh dấu bài đã hoàn thành và để AI đồng hành cùng bạn.",
+    "cta": "Bắt đầu ngay",
+    "features": {
+      "roadmap": { "title": "Lộ trình học tập", "body": "Chia mục tiêu thành các giai đoạn và bài học nhỏ." },
+      "checkoff": { "title": "Đánh dấu hoàn thành", "body": "Tick bài học khi xong và theo dõi tiến độ tăng dần." },
+      "reminders": { "title": "Nhắc nhở thông minh", "body": "Thông báo đẩy và email ngay trước giờ học." },
+      "ai": { "title": "Huấn luyện viên AI", "body": "Báo cáo hằng tuần, khen khi bạn vượt mục tiêu, góp ý khi chậm tiến độ." }
+    }
+  },
+  "login": {
+    "title": "Chào mừng trở lại",
+    "subtitle": "Chúng tôi sẽ gửi link đăng nhập qua email. Không cần mật khẩu.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "ban@example.com",
+    "submit": "Gửi link đăng nhập",
+    "sending": "Đang gửi…",
+    "sent": "Kiểm tra hộp thư! Bấm vào link trong email để đăng nhập.",
+    "invalidEmail": "Vui lòng nhập email hợp lệ.",
+    "error": "Đã có lỗi xảy ra. Vui lòng thử lại."
+  },
+  "dashboard": {
+    "greeting": "Xin chào",
+    "loading": "Đang tải bảng điều khiển…",
+    "empty": "Bạn chưa có lộ trình nào. Tính năng tạo lộ trình sẽ có ở Phase 1."
+  }
+}

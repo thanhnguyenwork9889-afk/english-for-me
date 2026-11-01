@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "English for me",
+    "description": "Your personal, roadmap-based English learning companion."
+  },
+  "nav": {
+    "login": "Log in",
+    "logout": "Log out",
+    "dashboard": "Dashboard",
+    "language": "Language"
+  },
+  "home": {
+    "badge": "Roadmap-based learning",
+    "headline": "Learn English step by step, on your own schedule.",
+    "subhead": "Build a learning roadmap, get reminded when it's study time, check off lessons, and let AI coach you along the way.",
+    "cta": "Get started",
+    "features": {
+      "roadmap": { "title": "Learning roadmap", "body": "Split your goal into phases and bite-sized lessons." },
+      "checkoff": { "title": "Check off lessons", "body": "Tick a lesson when you finish and watch your progress grow." },
+      "reminders": { "title": "Smart reminders", "body": "Push and email reminders right before study time." },
+      "ai": { "title": "AI coach", "body": "Weekly insights, praise when you're ahead, advice when you fall behind." }
+    }
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "We'll email you a magic link to sign in. No password needed.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "submit": "Send magic link",
+    "sending": "Sending…",
+    "sent": "Check your inbox! Click the link in the email to sign in.",
+    "invalidEmail": "Please enter a valid email address.",
+    "error": "Something went wrong. Please try again."
+  },
+  "dashboard": {
+    "greeting": "Hello",
+    "loading": "Loading your dashboard…",
+    "empty": "You don't have any roadmaps yet. Roadmap creation is coming in Phase 1."
+  }
+}
