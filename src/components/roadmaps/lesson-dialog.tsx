@@ -6,16 +6,45 @@ import { updateLesson } from "@/lib/roadmaps/actions";
 import type { LessonItem } from "@/lib/roadmaps/queries";
 import { btnGhost, btnPrimary, inputCls, labelCls, textareaCls } from "@/components/ui";
 
+/** Friendly label for a resource link (YouTube searches show their query). */
+function linkLabel(url: string): string {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    if (host === "youtube.com" && u.pathname === "/results") {
+      return `▶ YouTube: ${u.searchParams.get("search_query") ?? ""}`;
+    }
+    const known: Record<string, string> = {
+      "dictionary.cambridge.org": "📖 Cambridge Dictionary",
+      "youglish.com": "🔊 YouGlish",
+      "learnenglish.britishcouncil.org": "📘 British Council LearnEnglish",
+      "bbc.co.uk": "📻 BBC Learning English",
+    };
+    return known[host] ?? `🔗 ${host}`;
+  } catch {
+    return url;
+  }
+}
+
 export function LessonDialog({
   lesson,
   onClose,
+  onMarkDone,
   t,
+  tv,
+  markDoneLabel,
 }: {
   lesson: LessonItem;
   onClose: () => void;
+  /** Open the completion dialog for this lesson (shown in view mode when not completed). */
+  onMarkDone?: () => void;
   t: Dictionary["roadmaps"];
+  tv: Dictionary["lessonView"];
+  markDoneLabel: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const hasGuide = Boolean(lesson.contentMd?.trim() || lesson.resourceUrls.length);
+  const [mode, setMode] = useState<"view" | "edit">(hasGuide ? "view" : "edit");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -37,7 +66,7 @@ export function LessonDialog({
         resourceUrls,
         contentMd: String(formData.get("contentMd") ?? ""),
       });
-      if (res.ok) onClose();
+      if (res.ok) ref.current?.close();
       else setError(res.error === "invalid" ? t.form.invalid : t.saveError);
     });
   }
@@ -46,57 +75,129 @@ export function LessonDialog({
     <dialog
       ref={ref}
       onClose={onClose}
-      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-2xl bg-background p-0 text-foreground shadow-xl backdrop:bg-black/40"
+      className="m-auto max-h-[calc(100dvh-2rem)] w-[min(36rem,calc(100vw-2rem))] rounded-2xl bg-background p-0 text-foreground shadow-xl backdrop:bg-black/40"
     >
-      <form action={submit} className="space-y-4 p-5">
-        <h2 className="text-lg font-semibold">{t.lesson.editTitle}</h2>
-        <div>
-          <label className={labelCls} htmlFor="l-title">{t.lesson.title}</label>
-          <input id="l-title" name="title" required maxLength={200} defaultValue={lesson.title} className={inputCls} />
+      {mode === "view" ? (
+        <div className="space-y-5 p-5">
+          <div>
+            <h2 className="text-lg font-semibold">{lesson.title}</h2>
+            <p className="mt-1 text-sm text-zinc-500">
+              ⏱️ {lesson.estimatedMinutes} {t.minutes}
+              {lesson.completed && <span className="ml-2 font-medium text-emerald-600">✓</span>}
+            </p>
+          </div>
+
+          {lesson.contentMd?.trim() ? (
+            <div>
+              <h3 className="mb-2 text-sm font-semibold text-zinc-600 dark:text-zinc-400">{tv.goal}</h3>
+              <div className="rounded-xl bg-zinc-50 p-4 text-sm leading-relaxed whitespace-pre-wrap dark:bg-white/5">
+                {lesson.contentMd}
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-zinc-500">{tv.noContent}</p>
+          )}
+
+          {lesson.resourceUrls.length > 0 && (
+            <div>
+              <h3 className="mb-2 text-sm font-semibold text-zinc-600 dark:text-zinc-400">{tv.resources}</h3>
+              <ul className="space-y-1.5">
+                {lesson.resourceUrls.map((url) => (
+                  <li key={url}>
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-indigo-700 underline-offset-2 hover:underline dark:text-indigo-300"
+                    >
+                      {linkLabel(url)} ↗
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className="flex flex-wrap justify-between gap-2">
+            <button type="button" className={btnGhost} onClick={() => setMode("edit")}>
+              ✏️ {tv.edit}
+            </button>
+            <div className="flex gap-2">
+              <button type="button" className={btnGhost} onClick={() => ref.current?.close()}>
+                {tv.close}
+              </button>
+              {!lesson.completed && onMarkDone && (
+                <button
+                  type="button"
+                  className={btnPrimary}
+                  onClick={() => {
+                    ref.current?.close();
+                    onMarkDone();
+                  }}
+                >
+                  ✓ {markDoneLabel}
+                </button>
+              )}
+            </div>
+          </div>
         </div>
-        <div>
-          <label className={labelCls} htmlFor="l-min">{t.lesson.estimatedMinutes}</label>
-          <input
-            id="l-min"
-            name="estimatedMinutes"
-            type="number"
-            min={1}
-            max={1440}
-            required
-            defaultValue={lesson.estimatedMinutes}
-            className={`${inputCls} w-32`}
-          />
-        </div>
-        <div>
-          <label className={labelCls} htmlFor="l-res">{t.lesson.resources}</label>
-          <textarea
-            id="l-res"
-            name="resourceUrls"
-            rows={3}
-            defaultValue={lesson.resourceUrls.join("\n")}
-            placeholder="https://…"
-            className={textareaCls}
-          />
-        </div>
-        <div>
-          <label className={labelCls} htmlFor="l-notes">{t.lesson.notes}</label>
-          <textarea
-            id="l-notes"
-            name="contentMd"
-            rows={5}
-            defaultValue={lesson.contentMd ?? ""}
-            placeholder={t.lesson.notesPlaceholder}
-            className={textareaCls}
-          />
-        </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <div className="flex justify-end gap-2">
-          <button type="button" className={btnGhost} onClick={() => ref.current?.close()}>{t.form.cancel}</button>
-          <button type="submit" className={btnPrimary} disabled={pending}>
-            {pending ? t.form.saving : t.form.save}
-          </button>
-        </div>
-      </form>
+      ) : (
+        <form action={submit} className="space-y-4 p-5">
+          <h2 className="text-lg font-semibold">{t.lesson.editTitle}</h2>
+          <div>
+            <label className={labelCls} htmlFor="l-title">{t.lesson.title}</label>
+            <input id="l-title" name="title" required maxLength={200} defaultValue={lesson.title} className={inputCls} />
+          </div>
+          <div>
+            <label className={labelCls} htmlFor="l-min">{t.lesson.estimatedMinutes}</label>
+            <input
+              id="l-min"
+              name="estimatedMinutes"
+              type="number"
+              min={1}
+              max={1440}
+              required
+              defaultValue={lesson.estimatedMinutes}
+              className={`${inputCls} w-32`}
+            />
+          </div>
+          <div>
+            <label className={labelCls} htmlFor="l-res">{t.lesson.resources}</label>
+            <textarea
+              id="l-res"
+              name="resourceUrls"
+              rows={3}
+              defaultValue={lesson.resourceUrls.join("\n")}
+              placeholder="https://…"
+              className={textareaCls}
+            />
+          </div>
+          <div>
+            <label className={labelCls} htmlFor="l-notes">{t.lesson.notes}</label>
+            <textarea
+              id="l-notes"
+              name="contentMd"
+              rows={8}
+              defaultValue={lesson.contentMd ?? ""}
+              placeholder={t.lesson.notesPlaceholder}
+              className={textareaCls}
+            />
+          </div>
+          {error && <p className="text-sm text-red-600">{error}</p>}
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              className={btnGhost}
+              onClick={() => (hasGuide ? setMode("view") : ref.current?.close())}
+            >
+              {t.form.cancel}
+            </button>
+            <button type="submit" className={btnPrimary} disabled={pending}>
+              {pending ? t.form.saving : t.form.save}
+            </button>
+          </div>
+        </form>
+      )}
     </dialog>
   );
 }

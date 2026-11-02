@@ -44,6 +44,7 @@ import { LessonDialog } from "./lesson-dialog";
 
 type T = Dictionary["roadmaps"];
 type TP = Dictionary["progress"];
+type TV = Dictionary["lessonView"];
 
 // Draggable ids are namespaced so phases, lessons and drop zones never collide.
 const P = (id: string) => `p:${id}`;
@@ -79,11 +80,13 @@ export function RoadmapBoard({
   phases,
   t,
   tp,
+  tv,
 }: {
   roadmapId: string;
   phases: PhaseWithLessons[];
   t: T;
   tp: TP;
+  tv: TV;
 }) {
   // Local copy for optimistic drag & drop; re-sync whenever the server sends fresh data.
   const [prevPhases, setPrevPhases] = useState(phases);
@@ -251,7 +254,16 @@ export function RoadmapBoard({
         onAdd={(title) => createPhase(roadmapId, title)}
       />
 
-      {editing && <LessonDialog lesson={editing} t={t} onClose={() => setEditing(null)} />}
+      {editing && (
+        <LessonDialog
+          lesson={editing}
+          t={t}
+          tv={tv}
+          markDoneLabel={tp.markDone}
+          onMarkDone={() => setCompleting(editing)}
+          onClose={() => setEditing(null)}
+        />
+      )}
       {completing && (
         <CompleteDialog
           lesson={completing}

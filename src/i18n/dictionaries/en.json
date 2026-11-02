@@ -235,5 +235,26 @@
     "continue": "Continue learning",
     "noNext": "You're all caught up! Add more lessons to a roadmap.",
     "open": "Open roadmap"
+  },
+  "templates": {
+    "title": "Ready-made roadmaps",
+    "subtitle": "Not sure what to study? Start from a roadmap with every lesson already planned — you can still edit anything.",
+    "weeks": "{n} weeks",
+    "lessons": "{n} lessons",
+    "perDay": "{m} min/day",
+    "contentVi": "Vietnamese",
+    "contentEn": "English",
+    "showPhases": "See phases",
+    "hidePhases": "Hide phases",
+    "use": "Start this roadmap",
+    "creating": "Creating…",
+    "error": "Couldn't create the roadmap. Please try again."
+  },
+  "lessonView": {
+    "goal": "Lesson guide",
+    "resources": "Videos & resources",
+    "edit": "Edit lesson",
+    "close": "Close",
+    "noContent": "No guide yet. Click Edit to add notes."
   }
 }

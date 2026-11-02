@@ -235,5 +235,26 @@
     "continue": "Học tiếp",
     "noNext": "Bạn đã học hết! Thêm bài học mới vào lộ trình nhé.",
     "open": "Mở lộ trình"
+  },
+  "templates": {
+    "title": "Lộ trình soạn sẵn",
+    "subtitle": "Chưa biết học gì? Bắt đầu với lộ trình đã soạn sẵn từng bài — bạn vẫn sửa được mọi thứ.",
+    "weeks": "{n} tuần",
+    "lessons": "{n} bài",
+    "perDay": "{m} phút/ngày",
+    "contentVi": "Tiếng Việt",
+    "contentEn": "Tiếng Anh",
+    "showPhases": "Xem các giai đoạn",
+    "hidePhases": "Ẩn các giai đoạn",
+    "use": "Bắt đầu lộ trình này",
+    "creating": "Đang tạo…",
+    "error": "Không tạo được lộ trình. Vui lòng thử lại."
+  },
+  "lessonView": {
+    "goal": "Hướng dẫn bài học",
+    "resources": "Video & tài liệu",
+    "edit": "Sửa bài",
+    "close": "Đóng",
+    "noContent": "Chưa có hướng dẫn. Bấm Sửa để thêm ghi chú."
   }
 }

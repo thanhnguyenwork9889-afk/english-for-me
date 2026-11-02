@@ -12,6 +12,8 @@ import { getUserEmail, requireUserId } from "@/lib/auth";
 import { getProfile, profileLabel } from "@/lib/profile/queries";
 import { getLearningStats, getNextLesson } from "@/lib/progress/queries";
 import { listRoadmaps } from "@/lib/roadmaps/queries";
+import { templateCards } from "@/lib/templates";
+import { TemplateGallery } from "@/components/roadmaps/template-gallery";
 
 export default async function DashboardPage() {
   const [locale, dict] = await Promise.all([getLocale(), getDictionary()]);
@@ -104,7 +106,11 @@ async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionar
             {roadmaps.length ? t.viewAll : `+ ${dict.roadmaps.new}`}
           </Link>
         </div>
-        <RoadmapCards roadmaps={roadmaps.slice(0, 4)} locale={locale} t={dict.roadmaps} tp={dict.progress} />
+        {roadmaps.length > 0 ? (
+          <RoadmapCards roadmaps={roadmaps.slice(0, 4)} locale={locale} t={dict.roadmaps} tp={dict.progress} />
+        ) : (
+          <TemplateGallery templates={templateCards()} lang={locale} t={dict.templates} />
+        )}
       </section>
     </div>
   );
