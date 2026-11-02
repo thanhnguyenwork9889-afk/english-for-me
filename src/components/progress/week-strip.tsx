@@ -6,12 +6,16 @@ import type { DayActivity } from "@/lib/progress/queries";
 export function WeekStrip({
   days,
   today,
+  planned = [],
   t,
 }: {
   days: DayActivity[];
   today: string;
+  /** Local dates that have a scheduled session (shown as a dot under the weekday). */
+  planned?: string[];
   t: Dictionary["stats"];
 }) {
+  const plannedSet = new Set(planned);
   return (
     <ol className="grid grid-cols-7 gap-2">
       {days.map((d, i) => {
@@ -40,6 +44,10 @@ export function WeekStrip({
             >
               {t.weekdays[i]}
             </span>
+            <span
+              aria-hidden
+              className={`size-1.5 rounded-full ${plannedSet.has(d.date) && !studied ? "bg-indigo-400" : "bg-transparent"}`}
+            />
           </li>
         );
       })}

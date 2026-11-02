@@ -14,12 +14,15 @@ export function ContinueCard({
   t,
   tp,
   minutesLabel,
+  nextSession,
 }: {
   next: NextLesson;
   locale: string;
   t: Dictionary["stats"];
   tp: Dictionary["progress"];
   minutesLabel: string;
+  /** e.g. "Next session: Today at 20:00" */
+  nextSession?: string | null;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -30,6 +33,7 @@ export function ContinueCard({
       <p className="mt-0.5 text-sm text-zinc-600 dark:text-zinc-400">
         {next.roadmapTitle} › {next.phaseTitle} · {next.estimatedMinutes} {minutesLabel}
       </p>
+      {nextSession && <p className="mt-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">📅 {nextSession}</p>}
       <div className="mt-4 flex flex-wrap gap-2">
         <button type="button" className={btnPrimary} onClick={() => setOpen(true)}>
           ✓ {tp.markDone}

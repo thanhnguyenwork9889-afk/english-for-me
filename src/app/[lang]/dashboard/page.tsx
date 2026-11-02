@@ -11,6 +11,8 @@ import { getDictionary, getLocale, type Dictionary } from "@/i18n/get-dictionary
 import { getUserEmail, requireUserId } from "@/lib/auth";
 import { getProfile, profileLabel } from "@/lib/profile/queries";
 import { getLearningStats, getNextLesson } from "@/lib/progress/queries";
+import { dayLabel } from "@/lib/schedule/format";
+import { getAgenda } from "@/lib/schedule/queries";
 import { listRoadmaps } from "@/lib/roadmaps/queries";
 import { templateCards } from "@/lib/templates";
 import { TemplateGallery } from "@/components/roadmaps/template-gallery";
@@ -33,13 +35,21 @@ export default async function DashboardPage() {
 
 async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const userId = await requireUserId(locale);
-  const [profile, email, roadmaps, stats, next] = await Promise.all([
+  const [profile, email, roadmaps, stats, next, agenda] = await Promise.all([
     getProfile(userId),
     getUserEmail(),
     listRoadmaps(userId),
     getLearningStats(userId),
     getNextLesson(userId),
+    getAgenda(userId, 7),
   ]);
+  const upcoming = agenda.items.find((i) => !i.past);
+  const nextSession = upcoming
+    ? `${dict.schedule.nextSession}: ${format(dict.schedule.at, {
+        day: dayLabel(upcoming.date, agenda.now.date, locale, dict.schedule),
+        time: upcoming.time,
+      })}`
+    : null;
   const name = profile ? profileLabel(profile) : email;
   const t = dict.dashboard;
   const ts = dict.stats;
@@ -86,11 +96,18 @@ async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionar
       <section className="grid gap-6 md:grid-cols-[1fr_1.2fr]">
         <div>
           <h2 className="mb-3 text-lg font-semibold">{ts.weekActivity}</h2>
-          <WeekStrip days={week.days} today={stats.today} t={ts} />
+          <WeekStrip days={week.days} today={stats.today} planned={agenda.items.map((i) => i.date)} t={ts} />
         </div>
         <div>
           {next ? (
-            <ContinueCard next={next} locale={locale} t={ts} tp={dict.progress} minutesLabel={dict.roadmaps.minutes} />
+            <ContinueCard
+              next={next}
+              locale={locale}
+              t={ts}
+              tp={dict.progress}
+              minutesLabel={dict.roadmaps.minutes}
+              nextSession={nextSession}
+            />
           ) : (
             <div className="grid h-full place-items-center rounded-2xl border border-dashed border-black/10 p-6 text-center text-sm text-zinc-500 dark:border-white/15">
               {ts.noNext}

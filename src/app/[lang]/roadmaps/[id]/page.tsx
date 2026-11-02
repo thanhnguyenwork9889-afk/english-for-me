@@ -10,6 +10,8 @@ import { getDictionary, getLocale, type Dictionary } from "@/i18n/get-dictionary
 import { requireUserId } from "@/lib/auth";
 import { getRoadmapTree } from "@/lib/roadmaps/queries";
 import { hoursPerWeekNeeded, minutesToHours } from "@/lib/roadmaps/stats";
+import { getRoadmapForecast } from "@/lib/schedule/queries";
+import { ScheduleCard } from "@/components/schedule/schedule-card";
 
 export default async function RoadmapPage({ params }: PageProps<"/[lang]/roadmaps/[id]">) {
   const [locale, dict] = await Promise.all([getLocale(), getDictionary()]);
@@ -24,7 +26,7 @@ export default async function RoadmapPage({ params }: PageProps<"/[lang]/roadmap
         </Link>
         {/* params + session are request-time data: await them inside Suspense. */}
         <Suspense fallback={<p className="mt-6 text-zinc-500">{t.loading}</p>}>
-          <RoadmapDetail params={params} locale={locale} t={t} tp={dict.progress} tv={dict.lessonView} />
+          <RoadmapDetail params={params} locale={locale} t={t} tp={dict.progress} tv={dict.lessonView} ts={dict.schedule} />
         </Suspense>
       </main>
     </>
@@ -37,18 +39,20 @@ async function RoadmapDetail({
   t,
   tp,
   tv,
+  ts,
 }: {
   params: Promise<{ id: string }>;
   locale: Locale;
   t: Dictionary["roadmaps"];
   tp: Dictionary["progress"];
   tv: Dictionary["lessonView"];
+  ts: Dictionary["schedule"];
 }) {
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) notFound();
 
   const userId = await requireUserId(locale);
-  const roadmap = await getRoadmapTree(userId, id);
+  const [roadmap, forecast] = await Promise.all([getRoadmapTree(userId, id), getRoadmapForecast(userId, id)]);
   if (!roadmap) notFound();
 
   const allLessons = roadmap.phases.flatMap((p) => p.lessons);
@@ -65,6 +69,15 @@ async function RoadmapDetail({
         locale={locale}
         t={t}
         tp={tp}
+      />
+      <ScheduleCard
+        roadmapId={roadmap.id}
+        schedule={forecast.schedule}
+        finishDate={forecast.finishDate}
+        targetDate={roadmap.targetDate}
+        remainingCount={allLessons.filter((l) => !l.completed).length}
+        locale={locale}
+        t={ts}
       />
       <RoadmapBoard roadmapId={roadmap.id} phases={roadmap.phases} t={t} tp={tp} tv={tv} />
     </div>
