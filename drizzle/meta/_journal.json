@@ -15,6 +15,13 @@
       "when": 1793550981912,
       "tag": "0001_careless_rhino",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793632099216,
+      "tag": "0002_acoustic_magma",
+      "breakpoints": true
     }
   ]
 }

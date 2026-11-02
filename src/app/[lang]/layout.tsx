@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { locales } from "@/i18n/config";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
@@ -13,8 +13,16 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
-  return { title: dict.meta.title, description: dict.meta.description };
+  return {
+    title: dict.meta.title,
+    description: dict.meta.description,
+    manifest: "/manifest.webmanifest",
+    icons: { icon: "/icon.svg", apple: "/apple-touch-icon.png" },
+    appleWebApp: { capable: true, title: dict.meta.title, statusBarStyle: "default" },
+  };
 }
+
+export const viewport: Viewport = { themeColor: "#4f46e5" };
 
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   return (

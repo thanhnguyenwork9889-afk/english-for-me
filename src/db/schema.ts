@@ -123,6 +123,8 @@ export const studySessions = pgTable("study_sessions", {
 }, (t) => [
   index("sessions_due_idx").on(t.scheduledAt).where(sql`${t.status} = 'upcoming'`),
   index("sessions_user_idx").on(t.userId),
+  // The reminder cron materialises sessions idempotently (ON CONFLICT DO NOTHING).
+  unique("sessions_schedule_time_uq").on(t.scheduleId, t.scheduledAt),
 ]);
 
 // ========== NOTIFICATION ==========

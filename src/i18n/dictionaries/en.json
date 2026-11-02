@@ -316,6 +316,33 @@
     "saved": "Settings saved.",
     "invalid": "Please check the values.",
     "error": "Couldn't save. Please try again.",
-    "remindersSoon": "Push reminders are coming in the next update."
+    "notifications": "Reminders",
+    "pushEnabled": "Send me study reminders",
+    "remindBefore": "Remind me",
+    "remindOptions": {
+      "0": "At start time",
+      "5": "5 min before",
+      "10": "10 min before",
+      "15": "15 min before",
+      "30": "30 min before",
+      "60": "1 hour before"
+    },
+    "quietHours": "Quiet hours (optional)",
+    "quietHoursHint": "No reminders between these times, e.g. 22:00 → 07:00.",
+    "from": "From",
+    "to": "To",
+    "device": "This device",
+    "deviceOn": "Notifications are on for this device.",
+    "deviceOff": "Turn on notifications to get reminders on this device.",
+    "enable": "Turn on notifications",
+    "disable": "Turn off on this device",
+    "test": "Send a test",
+    "testSent": "Test sent — check your notifications.",
+    "testFailed": "Couldn't send. Turn notifications off and on again.",
+    "noDevice": "No device is subscribed yet.",
+    "denied": "Notifications are blocked in your browser settings for this site.",
+    "unsupported": "This browser doesn't support push notifications.",
+    "iosHint": "On iPhone/iPad: open this site in Safari → Share → Add to Home Screen, then open the app from the home screen and turn on notifications.",
+    "working": "Please wait…"
   }
 }

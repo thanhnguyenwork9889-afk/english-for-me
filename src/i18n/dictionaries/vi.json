@@ -316,6 +316,33 @@
     "saved": "Đã lưu cài đặt.",
     "invalid": "Vui lòng kiểm tra lại giá trị.",
     "error": "Không lưu được. Vui lòng thử lại.",
-    "remindersSoon": "Nhắc nhở qua thông báo đẩy sẽ có trong bản cập nhật tới."
+    "notifications": "Nhắc nhở",
+    "pushEnabled": "Gửi nhắc nhở học cho tôi",
+    "remindBefore": "Nhắc trước",
+    "remindOptions": {
+      "0": "Đúng giờ học",
+      "5": "5 phút",
+      "10": "10 phút",
+      "15": "15 phút",
+      "30": "30 phút",
+      "60": "1 tiếng"
+    },
+    "quietHours": "Giờ yên tĩnh (tuỳ chọn)",
+    "quietHoursHint": "Không gửi nhắc nhở trong khoảng này, vd. 22:00 → 07:00.",
+    "from": "Từ",
+    "to": "Đến",
+    "device": "Thiết bị này",
+    "deviceOn": "Đã bật thông báo trên thiết bị này.",
+    "deviceOff": "Bật thông báo để nhận nhắc nhở trên thiết bị này.",
+    "enable": "Bật thông báo",
+    "disable": "Tắt trên thiết bị này",
+    "test": "Gửi thử",
+    "testSent": "Đã gửi — hãy xem thông báo.",
+    "testFailed": "Không gửi được. Hãy tắt rồi bật lại thông báo.",
+    "noDevice": "Chưa có thiết bị nào bật thông báo.",
+    "denied": "Trình duyệt đang chặn thông báo của trang này. Hãy cho phép trong phần cài đặt trang web.",
+    "unsupported": "Trình duyệt này không hỗ trợ thông báo đẩy.",
+    "iosHint": "Trên iPhone/iPad: mở trang bằng Safari → nút Chia sẻ → Thêm vào MH chính, rồi mở app từ màn hình chính và bật thông báo.",
+    "working": "Vui lòng chờ…"
   }
 }

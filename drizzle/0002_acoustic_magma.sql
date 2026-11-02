@@ -1,0 +1,1 @@
+ALTER TABLE "study_sessions" ADD CONSTRAINT "sessions_schedule_time_uq" UNIQUE("schedule_id","scheduled_at");

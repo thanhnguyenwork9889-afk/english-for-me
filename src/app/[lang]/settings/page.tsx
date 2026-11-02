@@ -28,5 +28,5 @@ async function SettingsContent({ locale, t }: { locale: Locale; t: Dictionary["s
   const userId = await requireUserId(locale);
   const prefs = await getUserPrefs(userId);
   const zones = Intl.supportedValuesOf("timeZone");
-  return <SettingsForm initial={prefs} zones={zones} t={t} />;
+  return <SettingsForm initial={prefs} zones={zones} lang={locale} t={t} />;
 }

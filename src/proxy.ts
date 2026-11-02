@@ -21,6 +21,9 @@ function preferredLocale(request: NextRequest): Locale {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // API routes (e.g. the reminder cron) authenticate themselves; no locale or session work.
+  if (pathname.startsWith("/api/")) return NextResponse.next();
+
   // Auth callback lives outside the [lang] tree.
   if (pathname.startsWith("/auth")) {
     return updateSession(request, NextResponse.next({ request }));
@@ -39,6 +42,7 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Skip Next internals and static files.
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|json|txt|xml)$).*)",
+    // .js = service worker (/sw.js), manifest.webmanifest = PWA manifest.
+    "/((?!_next/static|_next/image|favicon.ico|manifest.webmanifest|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|json|txt|xml|js)$).*)",
   ],
 };

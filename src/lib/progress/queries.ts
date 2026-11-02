@@ -8,10 +8,24 @@ const DEFAULT_TZ = "Asia/Ho_Chi_Minh";
 
 export async function getUserPrefs(userId: string) {
   const [row] = await db
-    .select({ timezone: userSettings.timezone, weeklyGoalMinutes: userSettings.weeklyGoalMinutes })
+    .select({
+      timezone: userSettings.timezone,
+      weeklyGoalMinutes: userSettings.weeklyGoalMinutes,
+      pushEnabled: userSettings.pushEnabled,
+      remindBeforeMinutes: userSettings.remindBeforeMinutes,
+      quietHoursStart: userSettings.quietHoursStart,
+      quietHoursEnd: userSettings.quietHoursEnd,
+    })
     .from(userSettings)
     .where(eq(userSettings.userId, userId));
-  return { timezone: row?.timezone || DEFAULT_TZ, weeklyGoalMinutes: row?.weeklyGoalMinutes ?? 300 };
+  return {
+    timezone: row?.timezone || DEFAULT_TZ,
+    weeklyGoalMinutes: row?.weeklyGoalMinutes ?? 300,
+    pushEnabled: row?.pushEnabled ?? true,
+    remindBeforeMinutes: row?.remindBeforeMinutes ?? 15,
+    quietHoursStart: row?.quietHoursStart?.slice(0, 5) ?? "",
+    quietHoursEnd: row?.quietHoursEnd?.slice(0, 5) ?? "",
+  };
 }
 
 export type DayActivity = { date: string; lessons: number; minutes: number };
