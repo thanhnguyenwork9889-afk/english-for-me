@@ -33,12 +33,17 @@ import {
   renamePhase,
   reorderRoadmap,
 } from "@/lib/roadmaps/actions";
+import { reopenLesson } from "@/lib/progress/actions";
 import type { LessonItem, PhaseWithLessons } from "@/lib/roadmaps/queries";
+import { CompleteDialog } from "@/components/progress/complete-dialog";
+import { DoneCheckbox } from "@/components/progress/done-checkbox";
+import { ProgressMeter } from "@/components/progress/progress-meter";
 import { iconBtn, inputCls } from "@/components/ui";
 import { InlineAdd } from "./inline-add";
 import { LessonDialog } from "./lesson-dialog";
 
 type T = Dictionary["roadmaps"];
+type TP = Dictionary["progress"];
 
 // Draggable ids are namespaced so phases, lessons and drop zones never collide.
 const P = (id: string) => `p:${id}`;
@@ -73,10 +78,12 @@ export function RoadmapBoard({
   roadmapId,
   phases,
   t,
+  tp,
 }: {
   roadmapId: string;
   phases: PhaseWithLessons[];
   t: T;
+  tp: TP;
 }) {
   // Local copy for optimistic drag & drop; re-sync whenever the server sends fresh data.
   const [prevPhases, setPrevPhases] = useState(phases);
@@ -87,6 +94,7 @@ export function RoadmapBoard({
   }
 
   const [editing, setEditing] = useState<LessonItem | null>(null);
+  const [completing, setCompleting] = useState<LessonItem | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
   const snapshot = useRef<PhaseWithLessons[] | null>(null);
@@ -168,6 +176,28 @@ export function RoadmapBoard({
     });
   }
 
+  const setLessonDone = (lessonId: string, completed: boolean) =>
+    setItems((prev) =>
+      prev.map((p) => ({
+        ...p,
+        lessons: p.lessons.map((l) => (l.id === lessonId ? { ...l, completed } : l)),
+      })),
+    );
+
+  /** Unchecked → open the "Nice work" dialog. Checked → reopen right away (optimistic). */
+  function toggleDone(lesson: LessonItem) {
+    setError(null);
+    if (!lesson.completed) return setCompleting(lesson);
+    setLessonDone(lesson.id, false);
+    startTransition(async () => {
+      const res = await reopenLesson(lesson.id);
+      if (!res.ok) {
+        setLessonDone(lesson.id, true);
+        setError(tp.error);
+      }
+    });
+  }
+
   function onDragCancel() {
     if (snapshot.current) setItems(snapshot.current);
     snapshot.current = null;
@@ -203,7 +233,9 @@ export function RoadmapBoard({
               index={i}
               phase={phase}
               t={t}
+              tp={tp}
               onEditLesson={setEditing}
+              onToggleDone={toggleDone}
               onError={() => setError(t.saveError)}
             />
           ))}
@@ -220,6 +252,14 @@ export function RoadmapBoard({
       />
 
       {editing && <LessonDialog lesson={editing} t={t} onClose={() => setEditing(null)} />}
+      {completing && (
+        <CompleteDialog
+          lesson={completing}
+          t={tp}
+          onDone={() => setLessonDone(completing.id, true)}
+          onClose={() => setCompleting(null)}
+        />
+      )}
     </div>
   );
 }
@@ -242,13 +282,17 @@ function SortablePhase({
   phase,
   index,
   t,
+  tp,
   onEditLesson,
+  onToggleDone,
   onError,
 }: {
   phase: PhaseWithLessons;
   index: number;
   t: T;
+  tp: TP;
   onEditLesson: (l: LessonItem) => void;
+  onToggleDone: (l: LessonItem) => void;
   onError: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: P(phase.id) });
@@ -256,6 +300,8 @@ function SortablePhase({
   const [renaming, setRenaming] = useState(false);
   const [pending, startTransition] = useTransition();
   const totalMin = phase.lessons.reduce((s, l) => s + l.estimatedMinutes, 0);
+  const doneCount = phase.lessons.filter((l) => l.completed).length;
+  const doneLabel = format(tp.lessonsDone, { done: doneCount, total: phase.lessons.length });
 
   function rename(formData: FormData) {
     const title = String(formData.get("title") ?? "").trim();
@@ -307,8 +353,11 @@ function SortablePhase({
             {phase.title}
           </h2>
         )}
-        <span className="hidden shrink-0 text-xs text-zinc-500 sm:inline">
-          {format(t.lessons, { n: phase.lessons.length })} · {totalMin} {t.minutes}
+        <span className="shrink-0 text-xs text-zinc-500">
+          <span className="font-medium text-zinc-700 dark:text-zinc-300">
+            {doneCount}/{phase.lessons.length}
+          </span>
+          <span className="hidden sm:inline"> · {totalMin} {t.minutes}</span>
         </span>
         <button type="button" className={iconBtn} aria-label={t.rename} title={t.rename} onClick={() => setRenaming(true)}>
           ✏️
@@ -318,13 +367,25 @@ function SortablePhase({
         </button>
       </header>
 
+      {phase.lessons.length > 0 && (
+        <ProgressMeter value={doneCount} max={phase.lessons.length} label={doneLabel} size="sm" className="mt-3" />
+      )}
+
       <div
         ref={setDropRef}
         className={`mt-3 space-y-2 rounded-xl transition-colors ${isOver ? "bg-indigo-50/60 dark:bg-indigo-500/5" : ""}`}
       >
         <SortableContext items={phase.lessons.map((l) => L(l.id))} strategy={verticalListSortingStrategy}>
           {phase.lessons.map((lesson) => (
-            <SortableLesson key={lesson.id} lesson={lesson} t={t} onEdit={onEditLesson} onError={onError} />
+            <SortableLesson
+              key={lesson.id}
+              lesson={lesson}
+              t={t}
+              tp={tp}
+              onEdit={onEditLesson}
+              onToggleDone={onToggleDone}
+              onError={onError}
+            />
           ))}
         </SortableContext>
         {phase.lessons.length === 0 && (
@@ -350,12 +411,16 @@ function SortablePhase({
 function SortableLesson({
   lesson,
   t,
+  tp,
   onEdit,
+  onToggleDone,
   onError,
 }: {
   lesson: LessonItem;
   t: T;
+  tp: TP;
   onEdit: (l: LessonItem) => void;
+  onToggleDone: (l: LessonItem) => void;
   onError: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: L(lesson.id) });
@@ -377,7 +442,18 @@ function SortableLesson({
       } ${pending ? "opacity-50" : ""}`}
     >
       <DragHandle label={t.dragHandle} {...attributes} {...listeners} />
-      <button type="button" className="min-w-0 flex-1 truncate text-left text-sm hover:underline" onClick={() => onEdit(lesson)}>
+      <DoneCheckbox
+        checked={lesson.completed}
+        label={lesson.completed ? tp.reopen : tp.markDone}
+        onClick={() => onToggleDone(lesson)}
+      />
+      <button
+        type="button"
+        className={`min-w-0 flex-1 truncate text-left text-sm hover:underline ${
+          lesson.completed ? "text-zinc-400 line-through decoration-zinc-400/60" : ""
+        }`}
+        onClick={() => onEdit(lesson)}
+      >
         {lesson.title}
       </button>
       {lesson.resourceUrls.length > 0 && (

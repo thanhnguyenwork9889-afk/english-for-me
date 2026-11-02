@@ -50,7 +50,7 @@ supabase/policies.sql    # auth → users trigger + Row Level Security
 
 - [x] Phase 0 – setup, auth, bilingual UI, DB schema
 - [x] Phase 1 – roadmap / phase / lesson CRUD + drag & drop
-- [ ] Phase 2 – lesson check-off, progress, streak
+- [x] Phase 2 – lesson check-off, progress, streak
 - [ ] Phase 3 – scheduling + push/email reminders
 - [ ] Phase 4 – progress dashboard & charts
 - [ ] Phase 5–6 – AI progress coach

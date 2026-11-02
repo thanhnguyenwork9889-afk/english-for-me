@@ -3,15 +3,18 @@ import { format, formatDate, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { RoadmapSummary } from "@/lib/roadmaps/queries";
 import { minutesToHours } from "@/lib/roadmaps/stats";
+import { percent, ProgressMeter } from "@/components/progress/progress-meter";
 
 export function RoadmapCards({
   roadmaps,
   locale,
   t,
+  tp,
 }: {
   roadmaps: RoadmapSummary[];
   locale: Locale;
   t: Dictionary["roadmaps"];
+  tp: Dictionary["progress"];
 }) {
   if (!roadmaps.length) {
     return (
@@ -38,6 +41,22 @@ export function RoadmapCards({
                 {r.targetDate ? format(t.deadline, { date: formatDate(r.targetDate, locale) }) : t.noDeadline}
               </span>
             </div>
+            {r.lessonCount > 0 && (
+              <div className="mt-4">
+                <div className="mb-1 flex justify-between text-xs">
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                    {format(tp.percent, { p: percent(r.completedCount, r.lessonCount) })}
+                  </span>
+                  <span className="text-zinc-500">{r.completedCount}/{r.lessonCount}</span>
+                </div>
+                <ProgressMeter
+                  value={r.completedCount}
+                  max={r.lessonCount}
+                  label={format(tp.lessonsDone, { done: r.completedCount, total: r.lessonCount })}
+                  size="sm"
+                />
+              </div>
+            )}
           </Link>
         </li>
       ))}

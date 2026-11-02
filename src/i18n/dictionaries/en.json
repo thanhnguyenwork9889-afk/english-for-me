@@ -179,5 +179,61 @@
       "server": "Something went wrong. Please try again.",
       "notImage": "Please choose an image file."
     }
+  },
+  "progress": {
+    "markDone": "Mark as done",
+    "reopen": "Mark as not done",
+    "done": "Done",
+    "dialogTitle": "Nice work! 🎉",
+    "dialogSubtitle": "How did “{title}” go?",
+    "difficulty": "How hard was it?",
+    "difficultyLevels": [
+      "Very easy",
+      "Easy",
+      "OK",
+      "Hard",
+      "Very hard"
+    ],
+    "actualMinutes": "Minutes you actually studied",
+    "note": "Quick note (optional)",
+    "notePlaceholder": "What did you learn? What should you review?",
+    "save": "Complete lesson",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "percent": "{p}% complete",
+    "lessonsDone": "{done}/{total} lessons done",
+    "allDone": "🎉 Roadmap complete! Amazing work.",
+    "completedOn": "Completed {date}",
+    "error": "Couldn't update. Please try again."
+  },
+  "stats": {
+    "streak": "Streak",
+    "day": "{n} day",
+    "days": "{n} days",
+    "best": "Best {n}",
+    "studiedToday": "Studied today ✓",
+    "keepGoing": "Study today to keep it going",
+    "startStreak": "Finish a lesson to start one",
+    "weekLessons": "Lessons this week",
+    "weekMinutes": "Minutes this week",
+    "goal": "of {m} min goal",
+    "goalReached": "Weekly goal reached 🎯",
+    "total": "Lessons completed",
+    "allTime": "All time",
+    "weekActivity": "This week",
+    "weekdays": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ],
+    "dayDetail": "{n} lessons · {m} min",
+    "noActivity": "No lessons",
+    "continue": "Continue learning",
+    "noNext": "You're all caught up! Add more lessons to a roadmap.",
+    "open": "Open roadmap"
   }
 }

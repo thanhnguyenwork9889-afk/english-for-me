@@ -179,5 +179,61 @@
       "server": "Đã có lỗi xảy ra. Vui lòng thử lại.",
       "notImage": "Vui lòng chọn một tệp ảnh."
     }
+  },
+  "progress": {
+    "markDone": "Đánh dấu đã xong",
+    "reopen": "Đánh dấu chưa xong",
+    "done": "Đã xong",
+    "dialogTitle": "Làm tốt lắm! 🎉",
+    "dialogSubtitle": "Bài “{title}” thế nào?",
+    "difficulty": "Bài này khó không?",
+    "difficultyLevels": [
+      "Rất dễ",
+      "Dễ",
+      "Vừa",
+      "Khó",
+      "Rất khó"
+    ],
+    "actualMinutes": "Số phút bạn đã học thực tế",
+    "note": "Ghi chú nhanh (tuỳ chọn)",
+    "notePlaceholder": "Bạn học được gì? Cần ôn lại phần nào?",
+    "save": "Hoàn thành bài",
+    "saving": "Đang lưu…",
+    "cancel": "Huỷ",
+    "percent": "Hoàn thành {p}%",
+    "lessonsDone": "Xong {done}/{total} bài",
+    "allDone": "🎉 Đã hoàn thành lộ trình! Tuyệt vời.",
+    "completedOn": "Hoàn thành {date}",
+    "error": "Không cập nhật được. Vui lòng thử lại."
+  },
+  "stats": {
+    "streak": "Chuỗi ngày học",
+    "day": "{n} ngày",
+    "days": "{n} ngày",
+    "best": "Kỷ lục {n}",
+    "studiedToday": "Hôm nay đã học ✓",
+    "keepGoing": "Học hôm nay để giữ chuỗi",
+    "startStreak": "Hoàn thành 1 bài để bắt đầu",
+    "weekLessons": "Bài học tuần này",
+    "weekMinutes": "Phút học tuần này",
+    "goal": "/ mục tiêu {m} phút",
+    "goalReached": "Đã đạt mục tiêu tuần 🎯",
+    "total": "Bài đã hoàn thành",
+    "allTime": "Từ trước đến nay",
+    "weekActivity": "Tuần này",
+    "weekdays": [
+      "T2",
+      "T3",
+      "T4",
+      "T5",
+      "T6",
+      "T7",
+      "CN"
+    ],
+    "dayDetail": "{n} bài · {m} phút",
+    "noActivity": "Chưa học",
+    "continue": "Học tiếp",
+    "noNext": "Bạn đã học hết! Thêm bài học mới vào lộ trình nhé.",
+    "open": "Mở lộ trình"
   }
 }

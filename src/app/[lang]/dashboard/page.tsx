@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { AppHeader } from "@/components/app-header";
+import { ContinueCard } from "@/components/progress/continue-card";
+import { ProgressMeter } from "@/components/progress/progress-meter";
+import { StatTile } from "@/components/progress/stat-tile";
+import { WeekStrip } from "@/components/progress/week-strip";
 import { RoadmapCards } from "@/components/roadmaps/roadmap-cards";
-import type { Locale } from "@/i18n/config";
+import { format, type Locale } from "@/i18n/config";
 import { getDictionary, getLocale, type Dictionary } from "@/i18n/get-dictionary";
 import { getUserEmail, requireUserId } from "@/lib/auth";
 import { getProfile, profileLabel } from "@/lib/profile/queries";
+import { getLearningStats, getNextLesson } from "@/lib/progress/queries";
 import { listRoadmaps } from "@/lib/roadmaps/queries";
 
 export default async function DashboardPage() {
@@ -26,22 +31,81 @@ export default async function DashboardPage() {
 
 async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const userId = await requireUserId(locale);
-  const [profile, email, roadmaps] = await Promise.all([getProfile(userId), getUserEmail(), listRoadmaps(userId)]);
+  const [profile, email, roadmaps, stats, next] = await Promise.all([
+    getProfile(userId),
+    getUserEmail(),
+    listRoadmaps(userId),
+    getLearningStats(userId),
+    getNextLesson(userId),
+  ]);
   const name = profile ? profileLabel(profile) : email;
   const t = dict.dashboard;
+  const ts = dict.stats;
+  const { streak, week } = stats;
+
+  const streakCaption = streak.studiedToday
+    ? ts.studiedToday
+    : streak.current > 0
+      ? ts.keepGoing
+      : ts.startStreak;
+  const goalReached = week.minutes >= week.goalMinutes && week.goalMinutes > 0;
 
   return (
-    <section>
+    <div className="space-y-10">
       <h1 className="text-2xl font-bold">
         {t.greeting}, {name ?? "👋"}
       </h1>
-      <div className="mt-8 mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">{t.yourRoadmaps}</h2>
-        <Link href={`/${locale}/roadmaps`} className="text-sm font-medium text-indigo-600 hover:underline">
-          {roadmaps.length ? t.viewAll : `+ ${dict.roadmaps.new}`}
-        </Link>
-      </div>
-      <RoadmapCards roadmaps={roadmaps.slice(0, 4)} locale={locale} t={dict.roadmaps} />
-    </section>
+
+      {/* KPI row */}
+      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatTile
+          icon="🔥"
+          label={ts.streak}
+          value={format(streak.current === 1 ? ts.day : ts.days, { n: streak.current })}
+          caption={`${streakCaption} · ${format(ts.best, { n: streak.best })}`}
+        />
+        <StatTile icon="✅" label={ts.weekLessons} value={String(week.lessons)} />
+        <StatTile
+          icon="⏱️"
+          label={ts.weekMinutes}
+          value={String(week.minutes)}
+          caption={goalReached ? ts.goalReached : format(ts.goal, { m: week.goalMinutes })}
+        >
+          <ProgressMeter
+            value={week.minutes}
+            max={week.goalMinutes}
+            label={`${week.minutes} ${format(ts.goal, { m: week.goalMinutes })}`}
+            size="sm"
+          />
+        </StatTile>
+        <StatTile icon="📚" label={ts.total} value={String(stats.totalCompleted)} caption={ts.allTime} />
+      </section>
+
+      <section className="grid gap-6 md:grid-cols-[1fr_1.2fr]">
+        <div>
+          <h2 className="mb-3 text-lg font-semibold">{ts.weekActivity}</h2>
+          <WeekStrip days={week.days} today={stats.today} t={ts} />
+        </div>
+        <div>
+          {next ? (
+            <ContinueCard next={next} locale={locale} t={ts} tp={dict.progress} minutesLabel={dict.roadmaps.minutes} />
+          ) : (
+            <div className="grid h-full place-items-center rounded-2xl border border-dashed border-black/10 p-6 text-center text-sm text-zinc-500 dark:border-white/15">
+              {ts.noNext}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold">{t.yourRoadmaps}</h2>
+          <Link href={`/${locale}/roadmaps`} className="text-sm font-medium text-indigo-600 hover:underline">
+            {roadmaps.length ? t.viewAll : `+ ${dict.roadmaps.new}`}
+          </Link>
+        </div>
+        <RoadmapCards roadmaps={roadmaps.slice(0, 4)} locale={locale} t={dict.roadmaps} tp={dict.progress} />
+      </section>
+    </div>
   );
 }

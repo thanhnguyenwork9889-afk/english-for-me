@@ -24,7 +24,7 @@ export default async function RoadmapPage({ params }: PageProps<"/[lang]/roadmap
         </Link>
         {/* params + session are request-time data: await them inside Suspense. */}
         <Suspense fallback={<p className="mt-6 text-zinc-500">{t.loading}</p>}>
-          <RoadmapDetail params={params} locale={locale} t={t} />
+          <RoadmapDetail params={params} locale={locale} t={t} tp={dict.progress} />
         </Suspense>
       </main>
     </>
@@ -35,10 +35,12 @@ async function RoadmapDetail({
   params,
   locale,
   t,
+  tp,
 }: {
   params: Promise<{ id: string }>;
   locale: Locale;
   t: Dictionary["roadmaps"];
+  tp: Dictionary["progress"];
 }) {
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) notFound();
@@ -55,12 +57,14 @@ async function RoadmapDetail({
       <RoadmapHeader
         roadmap={roadmap}
         lessonCount={allLessons.length}
+        doneCount={allLessons.filter((l) => l.completed).length}
         totalHours={minutesToHours(totalMinutes)}
         pace={hoursPerWeekNeeded(totalMinutes, roadmap.targetDate)}
         locale={locale}
         t={t}
+        tp={tp}
       />
-      <RoadmapBoard roadmapId={roadmap.id} phases={roadmap.phases} t={t} />
+      <RoadmapBoard roadmapId={roadmap.id} phases={roadmap.phases} t={t} tp={tp} />
     </div>
   );
 }

@@ -19,14 +19,22 @@ export default async function RoadmapsPage() {
         <h1 className="text-2xl font-bold">{t.title}</h1>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{t.subtitle}</p>
         <Suspense fallback={<p className="mt-8 text-zinc-500">{t.loading}</p>}>
-          <RoadmapsContent locale={locale} t={t} />
+          <RoadmapsContent locale={locale} t={t} tp={dict.progress} />
         </Suspense>
       </main>
     </>
   );
 }
 
-async function RoadmapsContent({ locale, t }: { locale: Locale; t: Dictionary["roadmaps"] }) {
+async function RoadmapsContent({
+  locale,
+  t,
+  tp,
+}: {
+  locale: Locale;
+  t: Dictionary["roadmaps"];
+  tp: Dictionary["progress"];
+}) {
   const userId = await requireUserId(locale);
   const roadmaps = await listRoadmaps(userId);
 
@@ -35,7 +43,7 @@ async function RoadmapsContent({ locale, t }: { locale: Locale; t: Dictionary["r
       <div className="my-6 flex">
         <CreateRoadmapForm lang={locale} today={todayIso()} t={t} />
       </div>
-      <RoadmapCards roadmaps={roadmaps} locale={locale} t={t} />
+      <RoadmapCards roadmaps={roadmaps} locale={locale} t={t} tp={tp} />
     </>
   );
 }
