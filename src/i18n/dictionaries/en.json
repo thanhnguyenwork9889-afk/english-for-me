@@ -260,6 +260,34 @@
       "added": "Added {n} questions. Open a lesson to try them."
     }
   },
+  "speaking": {
+    "title": "Listening & speaking",
+    "phrases": "💬 Key phrases — tap 🔊 to hear",
+    "hint": "Hear the phrase, then tap 🎤 and say it back. The app shows which words did not come through. Free, and handled by your own device.",
+    "start": "Practise speaking",
+    "listen": "Listen",
+    "listenSlow": "Listen slowly",
+    "record": "Tap and speak",
+    "tryAgain": "Try again",
+    "stop": "Stop",
+    "listening": "Listening…",
+    "phraseOf": "Phrase {n} of {total}",
+    "scored": "{score}% matched",
+    "youSaid": "You said",
+    "missedWords": "Words that did not come through",
+    "nextPhrase": "Next phrase →",
+    "skip": "Skip this one",
+    "none": "This lesson has no phrases to practise yet.",
+    "noMic": "This browser cannot listen to speech. Try Chrome (desktop, Android) or Safari (iPhone). The 🔊 listen buttons still work.",
+    "micDenied": "Microphone access was blocked. Allow the microphone for this site and try again.",
+    "heardNothing": "Nothing came through. Speak a little louder and clearer.",
+    "micError": "Something went wrong while listening. Check your microphone and connection.",
+    "bands": {
+      "great": "Great! Almost every word came through.",
+      "close": "Close. Listen again and slow down a little.",
+      "again": "Give it another go. Tap 🐢 for a slower read first."
+    }
+  },
   "stats": {
     "streak": "Streak",
     "day": "{n} day",

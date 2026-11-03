@@ -260,6 +260,34 @@
       "added": "Đã thêm {n} câu hỏi. Mở một bài học để làm thử."
     }
   },
+  "speaking": {
+    "title": "Luyện nghe & nói",
+    "phrases": "💬 Mẫu câu — bấm 🔊 để nghe",
+    "hint": "Nghe máy đọc, rồi bấm 🎤 và nói lại. App sẽ chỉ ra từ nào bạn nói chưa rõ. Hoàn toàn miễn phí, xử lý ngay trên thiết bị của bạn.",
+    "start": "Luyện nói",
+    "listen": "Nghe",
+    "listenSlow": "Nghe chậm",
+    "record": "Nhấn rồi nói",
+    "tryAgain": "Thử lại",
+    "stop": "Dừng",
+    "listening": "Đang nghe…",
+    "phraseOf": "Câu {n}/{total}",
+    "scored": "Đúng {score}%",
+    "youSaid": "Bạn đã nói",
+    "missedWords": "Những từ chưa nghe rõ",
+    "nextPhrase": "Câu tiếp →",
+    "skip": "Bỏ qua câu này",
+    "none": "Bài học này chưa có mẫu câu nào để luyện nói.",
+    "noMic": "Trình duyệt này không nghe được giọng nói. Hãy dùng Chrome (máy tính, Android) hoặc Safari (iPhone). Nút 🔊 nghe máy đọc vẫn dùng được.",
+    "micDenied": "Bạn chưa cho phép dùng micro. Hãy bật quyền micro cho trang này rồi thử lại.",
+    "heardNothing": "Không nghe thấy gì. Hãy nói to và rõ hơn một chút.",
+    "micError": "Có lỗi khi nghe. Kiểm tra micro và mạng rồi thử lại.",
+    "bands": {
+      "great": "Rất tốt! Nghe rõ gần như cả câu.",
+      "close": "Gần đúng rồi. Nghe lại rồi nói chậm hơn một chút.",
+      "again": "Thử lại nhé. Bấm 🐢 để nghe chậm từng từ trước khi nói."
+    }
+  },
   "stats": {
     "streak": "Chuỗi ngày học",
     "day": "{n} ngày",

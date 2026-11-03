@@ -2,10 +2,13 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { ExerciseRunner } from "@/components/practice/exercise-runner";
+import { SpeakButton } from "@/components/speech/speak-button";
+import { SpeakingPractice } from "@/components/speech/speaking-practice";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { loadLessonPractice } from "@/lib/practice/actions";
 import type { PracticeQuestion } from "@/lib/practice/queries";
 import { updateLesson } from "@/lib/roadmaps/actions";
+import { lessonPhrases } from "@/lib/speech/phrases";
 import type { LessonItem } from "@/lib/roadmaps/queries";
 import { btnGhost, btnPrimary, inputCls, labelCls, textareaCls } from "@/components/ui";
 
@@ -36,6 +39,7 @@ export function LessonDialog({
   t,
   tv,
   tp,
+  tsp,
   markDoneLabel,
 }: {
   lesson: LessonItem;
@@ -45,11 +49,13 @@ export function LessonDialog({
   t: Dictionary["roadmaps"];
   tv: Dictionary["lessonView"];
   tp: Dictionary["practice"];
+  tsp: Dictionary["speaking"];
   markDoneLabel: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const hasGuide = Boolean(lesson.contentMd?.trim() || lesson.resourceUrls.length);
-  const [mode, setMode] = useState<"view" | "edit" | "practice">(hasGuide ? "view" : "edit");
+  const [mode, setMode] = useState<"view" | "edit" | "practice" | "speak">(hasGuide ? "view" : "edit");
+  const phrases = lessonPhrases(lesson.contentMd);
   const [questions, setQuestions] = useState<PracticeQuestion[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -109,6 +115,19 @@ export function LessonDialog({
             onClose={() => ref.current?.close()}
           />
         </div>
+      ) : mode === "speak" ? (
+        <div className="space-y-5 p-5">
+          <div>
+            <h2 className="text-lg font-semibold">{tsp.title}</h2>
+            <p className="mt-0.5 text-sm text-zinc-500">{lesson.title}</p>
+          </div>
+          <SpeakingPractice
+            phrases={phrases}
+            t={tsp}
+            closeLabel={tv.close}
+            onClose={() => setMode("view")}
+          />
+        </div>
       ) : mode === "view" ? (
         <div className="space-y-5 p-5">
           <div>
@@ -128,6 +147,24 @@ export function LessonDialog({
             </div>
           ) : (
             <p className="text-sm text-zinc-500">{tv.noContent}</p>
+          )}
+
+          {phrases.length > 0 && (
+            <div>
+              <h3 className="mb-2 text-sm font-semibold text-zinc-600 dark:text-zinc-400">{tsp.phrases}</h3>
+              <ul className="space-y-1">
+                {phrases.map((phrase) => (
+                  <li key={phrase} className="flex items-center gap-2">
+                    <span className="min-w-0 flex-1 text-sm">{phrase}</span>
+                    <SpeakButton text={phrase} label={tsp.listen} slowLabel={tsp.listenSlow} />
+                  </li>
+                ))}
+              </ul>
+              <button type="button" className={`${btnPrimary} mt-3`} onClick={() => setMode("speak")}>
+                🎤 {tsp.start}
+              </button>
+              <p className="mt-2 text-xs text-zinc-500">{tsp.hint}</p>
+            </div>
           )}
 
           {lesson.resourceUrls.length > 0 && (

@@ -28,7 +28,7 @@ export default async function RoadmapPage({ params }: PageProps<"/[lang]/roadmap
         </Link>
         {/* params + session are request-time data: await them inside Suspense. */}
         <Suspense fallback={<p className="mt-6 text-zinc-500">{t.loading}</p>}>
-          <RoadmapDetail params={params} locale={locale} t={t} tp={dict.progress} tv={dict.lessonView} tpr={dict.practice} ts={dict.schedule} />
+          <RoadmapDetail params={params} locale={locale} t={t} tp={dict.progress} tv={dict.lessonView} tpr={dict.practice} tsp={dict.speaking} ts={dict.schedule} />
         </Suspense>
       </main>
     </>
@@ -42,6 +42,7 @@ async function RoadmapDetail({
   tp,
   tv,
   tpr,
+  tsp,
   ts,
 }: {
   params: Promise<{ id: string }>;
@@ -50,6 +51,7 @@ async function RoadmapDetail({
   tp: Dictionary["progress"];
   tv: Dictionary["lessonView"];
   tpr: Dictionary["practice"];
+  tsp: Dictionary["speaking"];
   ts: Dictionary["schedule"];
 }) {
   const { id } = await params;
@@ -88,7 +90,7 @@ async function RoadmapDetail({
         t={ts}
       />
       {missingExercises > 0 && <SeedExercises roadmapId={roadmap.id} missing={missingExercises} t={tpr} />}
-      <RoadmapBoard roadmapId={roadmap.id} phases={roadmap.phases} t={t} tp={tp} tv={tv} tpr={tpr} />
+      <RoadmapBoard roadmapId={roadmap.id} phases={roadmap.phases} t={t} tp={tp} tv={tv} tpr={tpr} tsp={tsp} />
     </div>
   );
 }

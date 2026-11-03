@@ -46,6 +46,7 @@ type T = Dictionary["roadmaps"];
 type TP = Dictionary["progress"];
 type TV = Dictionary["lessonView"];
 type TPr = Dictionary["practice"];
+type TSp = Dictionary["speaking"];
 
 // Draggable ids are namespaced so phases, lessons and drop zones never collide.
 const P = (id: string) => `p:${id}`;
@@ -83,6 +84,7 @@ export function RoadmapBoard({
   tp,
   tv,
   tpr,
+  tsp,
 }: {
   roadmapId: string;
   phases: PhaseWithLessons[];
@@ -90,6 +92,7 @@ export function RoadmapBoard({
   tp: TP;
   tv: TV;
   tpr: TPr;
+  tsp: TSp;
 }) {
   // Local copy for optimistic drag & drop; re-sync whenever the server sends fresh data.
   const [prevPhases, setPrevPhases] = useState(phases);
@@ -264,6 +267,7 @@ export function RoadmapBoard({
           t={t}
           tv={tv}
           tp={tpr}
+          tsp={tsp}
           markDoneLabel={tp.markDone}
           onMarkDone={() => setCompleting(editing)}
           onClose={() => setEditing(null)}
