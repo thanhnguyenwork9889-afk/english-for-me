@@ -30,13 +30,16 @@ export type ReminderRunResult = {
   skipped: number;
   followups: number;
   closed: number;
+  /** Upcoming sessions removed because their schedule was deleted. */
+  orphaned: number;
 };
 
 /**
  * One tick of the reminder loop (meant to run every minute):
  *  1. materialise today's + tomorrow's sessions from active schedules (idempotent)
  *  2. atomically claim sessions whose reminder time has come and push a notification
- *  3. close sessions that ended 2h+ ago as done / missed
+ *  3. drop upcoming sessions whose schedule was deleted
+ *  4. close sessions that ended 2h+ ago as done / missed
  */
 export async function runReminders(exec: Executor = db): Promise<ReminderRunResult> {
   // 1. Materialise. `local date + time AT TIME ZONE tz` gives the correct instant, DST included.
@@ -191,7 +194,16 @@ export async function runReminders(exec: Executor = db): Promise<ReminderRunResu
     });
   }
 
-  // 3. Close finished sessions: done if any lesson was completed that local day, else missed.
+  // 3. Drop sessions whose schedule is gone (deleting a schedule nulls `schedule_id`
+  // rather than removing its sessions, to keep the history of ones already studied).
+  // Without this they would be closed as "missed" below and dent the adherence figures
+  // for sessions the user never agreed to in the first place.
+  const orphaned = await exec.execute(sql`
+    delete from study_sessions
+    where schedule_id is null and status = 'upcoming'
+  `);
+
+  // 4. Close finished sessions: done if any lesson was completed that local day, else missed.
   const closed = await exec.execute(sql`
     update study_sessions ss
     set status = case when exists (
@@ -213,6 +225,7 @@ export async function runReminders(exec: Executor = db): Promise<ReminderRunResu
     skipped,
     followups: followed,
     closed: rowCount(closed),
+    orphaned: rowCount(orphaned),
   };
 }
 
