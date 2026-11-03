@@ -12,6 +12,7 @@ export type SettingsInitial = {
   timezone: string;
   weeklyGoalMinutes: number;
   pushEnabled: boolean;
+  followupEnabled: boolean;
   remindBeforeMinutes: number;
   quietHoursStart: string;
   quietHoursEnd: string;
@@ -87,6 +88,15 @@ export function SettingsForm({
               className="size-4 accent-indigo-600"
             />
             {t.pushEnabled}
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              name="followupEnabled"
+              defaultChecked={initial.followupEnabled}
+              className="size-4 accent-indigo-600"
+            />
+            {t.followupEnabled}
           </label>
 
           <div>

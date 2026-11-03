@@ -345,6 +345,11 @@
     "iosHint": "On iPhone/iPad: open this site in Safari → Share → Add to Home Screen, then open the app from the home screen and turn on notifications.",
     "working": "Please wait…",
     "quietWarnLong": "This window is {h} hours long — you'll almost never get reminders.",
-    "quietWarnBlocks": "This window blocks your study time {time}, so that reminder won't be sent."
+    "quietWarnBlocks": "This window blocks your study time {time}, so that reminder won't be sent.",
+    "followupEnabled": "Remind me again 30 minutes later if I haven't studied yet"
+  },
+  "notify": {
+    "open": "Open",
+    "close": "Close"
   }
 }

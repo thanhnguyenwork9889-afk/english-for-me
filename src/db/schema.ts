@@ -36,6 +36,8 @@ export const userSettings = pgTable("user_settings", {
   timezone: text("timezone").notNull().default("Asia/Ho_Chi_Minh"),
   weeklyGoalMinutes: integer("weekly_goal_minutes").notNull().default(300),
   remindBeforeMinutes: integer("remind_before_minutes").notNull().default(15),
+  // Second nudge ~30 min after the session starts if nothing was studied yet.
+  followupEnabled: boolean("followup_enabled").notNull().default(true),
   pushEnabled: boolean("push_enabled").notNull().default(true),
   emailEnabled: boolean("email_enabled").notNull().default(true),
   aiTone: text("ai_tone").notNull().default("friendly"), // friendly | strict | coach
@@ -120,6 +122,7 @@ export const studySessions = pgTable("study_sessions", {
   durationMin: integer("duration_min").notNull(),
   status: text("status").notNull().default("upcoming"), // upcoming | done | missed | rescheduled
   remindedAt: timestamp("reminded_at", { withTimezone: true }),
+  followupAt: timestamp("followup_at", { withTimezone: true }),
 }, (t) => [
   index("sessions_due_idx").on(t.scheduledAt).where(sql`${t.status} = 'upcoming'`),
   index("sessions_user_idx").on(t.userId),

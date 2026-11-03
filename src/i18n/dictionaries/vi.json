@@ -345,6 +345,11 @@
     "iosHint": "Trên iPhone/iPad: mở trang bằng Safari → nút Chia sẻ → Thêm vào MH chính, rồi mở app từ màn hình chính và bật thông báo.",
     "working": "Vui lòng chờ…",
     "quietWarnLong": "Khoảng này dài {h} tiếng — bạn sẽ gần như không nhận được nhắc nhở nào.",
-    "quietWarnBlocks": "Khoảng này trùng giờ học {time} của bạn, nên nhắc nhở lúc đó sẽ không được gửi."
+    "quietWarnBlocks": "Khoảng này trùng giờ học {time} của bạn, nên nhắc nhở lúc đó sẽ không được gửi.",
+    "followupEnabled": "Nhắc lại sau 30 phút nếu tôi vẫn chưa học"
+  },
+  "notify": {
+    "open": "Mở",
+    "close": "Đóng"
   }
 }

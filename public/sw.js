@@ -13,6 +13,19 @@ self.addEventListener("push", (event) => {
   }
   const title = data.title || "English for me";
   event.waitUntil(
+    (async () => {
+      // Red dot on the installed app icon (iOS home-screen apps, desktop PWAs) until the app is opened.
+      if (data.tag !== "test" && self.navigator.setAppBadge) {
+        try {
+          await self.navigator.setAppBadge(1);
+        } catch {}
+      }
+      // If the app is open, tell it so it can play a sound and show an in-app banner.
+      const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+      for (const client of windows) client.postMessage({ type: "push", title, body: data.body || "", url: data.url || "/" });
+    })(),
+  );
+  event.waitUntil(
     self.registration.showNotification(title, {
       body: data.body || "",
       icon: "/icon-192.png",
@@ -31,6 +44,7 @@ self.addEventListener("push", (event) => {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
+  if (self.navigator.clearAppBadge) self.navigator.clearAppBadge().catch(() => {});
   const url = new URL((event.notification.data && event.notification.data.url) || "/", self.location.origin).href;
   event.waitUntil(
     (async () => {
