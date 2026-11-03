@@ -1,5 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { runReminders } from "@/lib/reminders/run";
+import { sendWeeklyReports } from "@/lib/supervisor/weekly-push";
 
 /**
  * Called every minute by Supabase pg_cron (see supabase/04_reminders_cron.sql) with
@@ -18,8 +19,11 @@ function authorized(request: Request): boolean {
 async function handle(request: Request) {
   if (!authorized(request)) return Response.json({ error: "unauthorized" }, { status: 401 });
   try {
-    const result = await runReminders();
-    return Response.json({ ok: true, ...result });
+    // Reminders first: they are time-critical, the weekly summary is not. Run in sequence
+    // so a slow weekly report can never delay a session reminder.
+    const reminders = await runReminders();
+    const weekly = await sendWeeklyReports();
+    return Response.json({ ok: true, ...reminders, weekly });
   } catch (e) {
     console.error("[cron/reminders]", e);
     return Response.json({ ok: false }, { status: 500 });

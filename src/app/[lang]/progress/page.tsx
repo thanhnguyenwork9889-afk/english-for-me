@@ -7,11 +7,15 @@ import { ActivityTable } from "@/components/stats/activity-table";
 import { AttendanceCard } from "@/components/stats/attendance-card";
 import { MinutesChart } from "@/components/stats/minutes-chart";
 import { PhaseProgressList } from "@/components/stats/phase-progress";
+import { InsightList } from "@/components/supervisor/insight-list";
+import { WeeklyCard } from "@/components/supervisor/weekly-card";
 import { format, type Locale } from "@/i18n/config";
 import { getDictionary, getLocale, type Dictionary } from "@/i18n/get-dictionary";
 import { requireUserId } from "@/lib/auth";
 import { calendarWeeks, daySeries } from "@/lib/stats/calendar";
 import { getProgressReport } from "@/lib/stats/queries";
+import { getSupervisorFacts } from "@/lib/supervisor/queries";
+import { buildInsights, weeklyReport } from "@/lib/supervisor/rules";
 
 const BAR_DAYS = 14;
 const HEATMAP_WEEKS = 16;
@@ -36,7 +40,9 @@ export default async function ProgressPage() {
 
 async function Report({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const userId = await requireUserId(locale);
-  const report = await getProgressReport(userId);
+  const [report, facts] = await Promise.all([getProgressReport(userId), getSupervisorFacts(userId)]);
+  const insights = buildInsights(facts);
+  const weekly = weeklyReport(facts);
   const t = dict.insights;
   const ts = dict.stats;
   const { totals, today, days } = report;
@@ -55,6 +61,17 @@ async function Report({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </Link>
         </p>
       )}
+
+      {/* The supervisor's read on the numbers comes first: it says what to do about them. */}
+      <section>
+        <h2 className="text-lg font-semibold">{dict.supervisor.title}</h2>
+        <p className="mb-4 text-sm text-zinc-500">{dict.supervisor.subtitle}</p>
+        <InsightList insights={insights} locale={locale} t={dict.supervisor} />
+      </section>
+
+      <section>
+        <WeeklyCard report={weekly} t={dict.supervisor} />
+      </section>
 
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <StatTile icon="📚" label={ts.total} value={String(totals.lessons)} caption={ts.allTime} />

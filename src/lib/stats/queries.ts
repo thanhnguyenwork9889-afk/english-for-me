@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { lessonProgress, lessons, phases, roadmaps, studySessions } from "@/db/schema";
@@ -10,7 +11,7 @@ import { attendanceRate, type DayPoint } from "./calendar";
  * Every day this user completed something, in their own timezone. One row per study
  * day (not per lesson), so even a year of daily study is a few hundred small rows.
  */
-export async function getActivityDays(userId: string, timezone: string): Promise<DayPoint[]> {
+export const getActivityDays = cache(async (userId: string, timezone: string): Promise<DayPoint[]> => {
   const localDay = sql<string>`to_char(${lessonProgress.completedAt} at time zone ${timezone}, 'YYYY-MM-DD')`;
   return db
     .select({
@@ -25,7 +26,7 @@ export async function getActivityDays(userId: string, timezone: string): Promise
     // wouldn't recognise GROUP BY <expr> as the selected expression.
     .groupBy(sql`1`)
     .orderBy(sql`1`);
-}
+});
 
 export type Attendance = {
   /** Sessions already over, so each one counts as kept or missed. */
@@ -37,7 +38,7 @@ export type Attendance = {
 };
 
 /** How reliably the user shows up for the sessions their schedule created. */
-export async function getAttendance(userId: string, days = 30): Promise<Attendance> {
+export const getAttendance = cache(async (userId: string, days = 30): Promise<Attendance> => {
   const [row] = await db
     .select({
       done: sql<number>`count(*) filter (where ${studySessions.status} = 'done')::int`,
@@ -54,7 +55,7 @@ export async function getAttendance(userId: string, days = 30): Promise<Attendan
   const done = row?.done ?? 0;
   const missed = row?.missed ?? 0;
   return { done, missed, upcoming: row?.upcoming ?? 0, rate: attendanceRate(done, missed) };
-}
+});
 
 export type PhaseProgress = {
   roadmapId: string;

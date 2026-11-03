@@ -13,6 +13,7 @@ import {
   time,
   timestamp,
   unique,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -199,7 +200,14 @@ export const notifications = pgTable("notifications", {
   scheduledFor: timestamp("scheduled_for", { withTimezone: true }),
   sentAt: timestamp("sent_at", { withTimezone: true }),
   readAt: timestamp("read_at", { withTimezone: true }),
-}, (t) => [index("notifications_user_idx").on(t.userId)]);
+}, (t) => [
+  index("notifications_user_idx").on(t.userId),
+  // One weekly report per user per week: the Monday job claims this row before sending,
+  // so two overlapping cron ticks can never both push it.
+  uniqueIndex("notifications_weekly_uq")
+    .on(t.userId, t.scheduledFor)
+    .where(sql`${t.type} = 'weekly_report'`),
+]);
 
 // ========== AI ==========
 export const aiInsights = pgTable("ai_insights", {

@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "notifications_weekly_uq" ON "notifications" USING btree ("user_id","scheduled_for") WHERE "notifications"."type" = 'weekly_report';

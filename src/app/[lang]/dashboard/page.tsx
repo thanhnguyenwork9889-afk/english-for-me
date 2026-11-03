@@ -5,6 +5,7 @@ import { ContinueCard } from "@/components/progress/continue-card";
 import { btnPrimary } from "@/components/ui";
 import { ProgressMeter } from "@/components/progress/progress-meter";
 import { StatTile } from "@/components/progress/stat-tile";
+import { InsightList } from "@/components/supervisor/insight-list";
 import { WeekStrip } from "@/components/progress/week-strip";
 import { RoadmapCards } from "@/components/roadmaps/roadmap-cards";
 import { format, type Locale } from "@/i18n/config";
@@ -12,6 +13,8 @@ import { getDictionary, getLocale, type Dictionary } from "@/i18n/get-dictionary
 import { getUserEmail, requireUserId } from "@/lib/auth";
 import { getProfile, profileLabel } from "@/lib/profile/queries";
 import { getReviewCounts } from "@/lib/practice/queries";
+import { getSupervisorFacts } from "@/lib/supervisor/queries";
+import { buildInsights } from "@/lib/supervisor/rules";
 import { getLearningStats, getNextLesson } from "@/lib/progress/queries";
 import { dayLabel } from "@/lib/schedule/format";
 import { getAgenda } from "@/lib/schedule/queries";
@@ -37,7 +40,7 @@ export default async function DashboardPage() {
 
 async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const userId = await requireUserId(locale);
-  const [profile, email, roadmaps, stats, next, agenda, review] = await Promise.all([
+  const [profile, email, roadmaps, stats, next, agenda, review, facts] = await Promise.all([
     getProfile(userId),
     getUserEmail(),
     listRoadmaps(userId),
@@ -45,6 +48,7 @@ async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionar
     getNextLesson(userId),
     getAgenda(userId, 7),
     getReviewCounts(userId),
+    getSupervisorFacts(userId),
   ]);
   const upcoming = agenda.items.find((i) => !i.past);
   const nextSession = upcoming
@@ -94,6 +98,11 @@ async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionar
           />
         </StatTile>
         <StatTile icon="📚" label={ts.total} value={String(stats.totalCompleted)} caption={ts.allTime} />
+      </section>
+
+      {/* The two most useful remarks; the full list lives on the progress page. */}
+      <section>
+        <InsightList insights={buildInsights(facts, 2)} locale={locale} t={dict.supervisor} />
       </section>
 
       {/* Only when something is actually due — an always-present nag stops being read. */}

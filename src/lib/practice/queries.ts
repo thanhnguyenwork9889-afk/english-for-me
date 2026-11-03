@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { and, asc, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { exerciseAttempts, exercises, lessons, phases, reviewItems, roadmaps } from "@/db/schema";
@@ -60,7 +61,7 @@ export async function getReviewQueue(userId: string, limit = 10): Promise<Review
 export type ReviewCounts = { due: number; later: number };
 
 /** For the dashboard card: how much is waiting now, and how much is scheduled for later. */
-export async function getReviewCounts(userId: string): Promise<ReviewCounts> {
+export const getReviewCounts = cache(async (userId: string): Promise<ReviewCounts> => {
   const [row] = await db
     .select({
       due: sql<number>`count(*) filter (where ${reviewItems.dueAt} <= now())::int`,
@@ -69,7 +70,7 @@ export async function getReviewCounts(userId: string): Promise<ReviewCounts> {
     .from(reviewItems)
     .where(eq(reviewItems.userId, userId));
   return { due: row?.due ?? 0, later: row?.later ?? 0 };
-}
+});
 
 export type LessonPractice = { total: number; correct: number };
 

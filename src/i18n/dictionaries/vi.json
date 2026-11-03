@@ -355,6 +355,102 @@
     "colMinutes": "Phút",
     "colTotal": "Tổng"
   },
+  "supervisor": {
+    "title": "Nhận xét tiến độ",
+    "subtitle": "App tự xem số liệu của bạn và nói thẳng điều cần biết.",
+    "none": "Chưa có gì cần lưu ý. Cứ học tiếp nhé.",
+    "act": {
+      "roadmaps": "Mở lộ trình",
+      "review": "Ôn tập ngay",
+      "schedule": "Đổi lịch học"
+    },
+    "insights": {
+      "firstLesson": {
+        "title": "Bắt đầu với bài đầu tiên",
+        "body": "Hoàn thành 1 bài để app bắt đầu theo dõi tiến độ và nhắc bạn đúng lúc."
+      },
+      "comeback": {
+        "title": "Bạn nghỉ {days} ngày rồi",
+        "body": "Không sao cả. Hôm nay chỉ cần 1 bài, đừng học bù dồn. Quan trọng là quay lại nhịp."
+      },
+      "behindSchedule": {
+        "title": "“{title}” đang chậm {lateDays} ngày",
+        "body": "Theo nhịp hiện tại bạn xong ngày {finishDate}, trong khi hạn là {targetDate}. Cần khoảng {needMinutes} phút/tuần để kịp — thêm 1 buổi học hoặc kéo dài mỗi buổi."
+      },
+      "missedRun": {
+        "title": "Bỏ lỡ {n} buổi liên tiếp",
+        "body": "Thường là do giờ học chưa phù hợp, không phải do bạn thiếu quyết tâm. Thử đổi sang giờ bạn chắc chắn rảnh."
+      },
+      "reviewPileUp": {
+        "title": "{n} câu sai đang chờ ôn",
+        "body": "Nhiều quá sẽ thành gánh nặng. Ôn 10 câu hôm nay thôi, phần còn lại để mai."
+      },
+      "goalAtRisk": {
+        "title": "Khó đạt mục tiêu tuần này",
+        "body": "Bạn học {done}/{goal} phút, còn thiếu {left} phút mà tuần gần hết. Học 1–2 bài nữa, hoặc giảm mục tiêu cho hợp sức."
+      },
+      "noSchedule": {
+        "title": "Chưa đặt lịch học",
+        "body": "Đặt ngày và giờ học để app nhắc bạn đúng lúc và dự báo được ngày hoàn thành."
+      },
+      "reviewDue": {
+        "title": "{n} câu cần ôn lại",
+        "body": "Chỉ mất 2–3 phút. Ôn đúng lúc gần quên là cách nhớ lâu nhất."
+      },
+      "goalProgress": {
+        "title": "Tuần này: {done}/{goal} phút ({percent}%)",
+        "body": "Còn {left} phút nữa là đạt mục tiêu. Vẫn còn thời gian."
+      },
+      "slowingDown": {
+        "title": "Tuần này chậm hơn tuần trước",
+        "body": "{thisWeek} phút so với {lastWeek} phút tuần trước. Nếu đang bận, hạ mục tiêu xuống còn hơn là bỏ hẳn."
+      },
+      "goalMet": {
+        "title": "Đạt mục tiêu tuần 🎯",
+        "body": "{done}/{goal} phút. Giữ nhịp này là tiến bộ chắc chắn."
+      },
+      "improving": {
+        "title": "Tăng {percent}% so với tuần trước",
+        "body": "Nhịp học đang lên. Rất tốt."
+      },
+      "streak": {
+        "title": "Chuỗi {n} ngày liên tiếp 🔥",
+        "body": "Học đều mỗi ngày quan trọng hơn học nhiều một buổi."
+      },
+      "reliable": {
+        "title": "Đi học đúng lịch {rate}%",
+        "body": "Bạn giữ lời hứa với chính mình rất tốt."
+      },
+      "roadmapDone": {
+        "title": "Đã học hết “{title}” 🎉",
+        "body": "Thêm bài mới vào lộ trình, hoặc tạo lộ trình tiếp theo."
+      },
+      "onTrack": {
+        "title": "“{title}” đúng tiến độ",
+        "body": "Theo nhịp hiện tại bạn sẽ xong ngày {finishDate}, kịp hạn."
+      }
+    },
+    "weekly": {
+      "title": "Tuần vừa rồi",
+      "change": "{percent}% so với tuần trước đó",
+      "minutes": "Phút học",
+      "lessons": "Bài xong",
+      "goal": "So với mục tiêu",
+      "reviewDue": "Câu cần ôn",
+      "goalLabel": "{done}/{goal} phút của mục tiêu tuần",
+      "headlines": {
+        "weeklyNothing": "Tuần rồi bạn chưa học buổi nào. Tuần này bắt đầu lại bằng 1 bài duy nhất nhé.",
+        "weeklyBehind": "Bạn đang chậm so với hạn của lộ trình. Xem phần nhận xét bên trên để biết cần thêm bao nhiêu phút mỗi tuần.",
+        "weeklyGoalMet": "Bạn đạt mục tiêu tuần. Rất tốt — giữ nhịp này.",
+        "weeklySlowing": "Tuần rồi giảm nhiều so với tuần trước đó. Nếu đang bận, hạ mục tiêu xuống còn hơn là bỏ hẳn.",
+        "weeklyImproving": "Tuần rồi bạn học nhiều hơn hẳn. Đà này đang tốt.",
+        "weeklyReview": "Bạn có nhiều câu sai đang chờ ôn. Ôn trước khi học bài mới sẽ nhớ lâu hơn.",
+        "weeklyKeepGoing": "Vẫn đang đi đúng hướng. Cứ học đều là được."
+      },
+      "pushTitle": "📊 Báo cáo tuần",
+      "pushBody": "Tuần rồi: {minutes} phút · {lessons} bài · {percent}% mục tiêu"
+    }
+  },
   "templates": {
     "title": "Lộ trình soạn sẵn",
     "subtitle": "Chưa biết học gì? Bắt đầu với lộ trình đã soạn sẵn từng bài — bạn vẫn sửa được mọi thứ.",

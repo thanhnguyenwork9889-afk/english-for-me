@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { and, asc, desc, eq, isNull, or, ne, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { lessonProgress, lessons, phases, roadmaps, userSettings } from "@/db/schema";
@@ -6,7 +7,8 @@ import { addDays, computeStreak, todayIn, weekStart, type Streak } from "./strea
 
 const DEFAULT_TZ = "Asia/Ho_Chi_Minh";
 
-export async function getUserPrefs(userId: string) {
+/** Cached per request: almost every feature query needs the timezone and weekly goal. */
+export const getUserPrefs = cache(async (userId: string) => {
   const [row] = await db
     .select({
       timezone: userSettings.timezone,
@@ -28,7 +30,7 @@ export async function getUserPrefs(userId: string) {
     quietHoursStart: row?.quietHoursStart?.slice(0, 5) ?? "",
     quietHoursEnd: row?.quietHoursEnd?.slice(0, 5) ?? "",
   };
-}
+});
 
 export type DayActivity = { date: string; lessons: number; minutes: number };
 

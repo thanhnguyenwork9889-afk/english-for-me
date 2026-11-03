@@ -355,6 +355,102 @@
     "colMinutes": "Minutes",
     "colTotal": "Total"
   },
+  "supervisor": {
+    "title": "Progress review",
+    "subtitle": "The app reads your own numbers and tells you what matters.",
+    "none": "Nothing to flag. Keep going.",
+    "act": {
+      "roadmaps": "Open roadmap",
+      "review": "Review now",
+      "schedule": "Change schedule"
+    },
+    "insights": {
+      "firstLesson": {
+        "title": "Start with your first lesson",
+        "body": "Finish one lesson and the app can start tracking your progress and reminding you."
+      },
+      "comeback": {
+        "title": "You have been away {days} days",
+        "body": "That is fine. Just one lesson today — no catching up in bulk. Getting back into the rhythm is what counts."
+      },
+      "behindSchedule": {
+        "title": "“{title}” is {lateDays} days behind",
+        "body": "At this pace you finish on {finishDate}, but the deadline is {targetDate}. About {needMinutes} minutes a week would make it — add a session or make each one longer."
+      },
+      "missedRun": {
+        "title": "{n} sessions missed in a row",
+        "body": "That usually means the time of day does not fit, not that you lack willpower. Move it to an hour you know is free."
+      },
+      "reviewPileUp": {
+        "title": "{n} questions waiting to be reviewed",
+        "body": "That many becomes a chore. Do ten today and leave the rest for tomorrow."
+      },
+      "goalAtRisk": {
+        "title": "This week's goal is slipping",
+        "body": "You are at {done} of {goal} minutes with {left} to go and the week nearly over. Another lesson or two, or lower the goal to something you can keep."
+      },
+      "noSchedule": {
+        "title": "No study schedule yet",
+        "body": "Pick the days and time you will study so the app can remind you and forecast your finish date."
+      },
+      "reviewDue": {
+        "title": "{n} questions to review",
+        "body": "Two or three minutes. Reviewing just before you would forget is what makes it stick."
+      },
+      "goalProgress": {
+        "title": "This week: {done} of {goal} minutes ({percent}%)",
+        "body": "{left} minutes to go. There is still time."
+      },
+      "slowingDown": {
+        "title": "Slower than last week",
+        "body": "{thisWeek} minutes against {lastWeek} last week. If you are busy, lower the goal rather than drop it."
+      },
+      "goalMet": {
+        "title": "Weekly goal reached 🎯",
+        "body": "{done} of {goal} minutes. Keep this rhythm and progress is certain."
+      },
+      "improving": {
+        "title": "{percent}% more than last week",
+        "body": "Your pace is going up. Nicely done."
+      },
+      "streak": {
+        "title": "{n} days in a row 🔥",
+        "body": "Studying a little every day beats one long session."
+      },
+      "reliable": {
+        "title": "{rate}% of sessions kept",
+        "body": "You are keeping the promises you make to yourself."
+      },
+      "roadmapDone": {
+        "title": "“{title}” complete 🎉",
+        "body": "Add new lessons to it, or start your next roadmap."
+      },
+      "onTrack": {
+        "title": "“{title}” is on track",
+        "body": "At this pace you finish on {finishDate}, inside the deadline."
+      }
+    },
+    "weekly": {
+      "title": "Last week",
+      "change": "{percent}% against the week before",
+      "minutes": "Minutes",
+      "lessons": "Lessons",
+      "goal": "Of the goal",
+      "reviewDue": "To review",
+      "goalLabel": "{done} of {goal} minutes of the weekly goal",
+      "headlines": {
+        "weeklyNothing": "No study sessions last week. Start this week with a single lesson.",
+        "weeklyBehind": "You are behind your roadmap's deadline. The review above says how many minutes a week would fix it.",
+        "weeklyGoalMet": "You hit your weekly goal. Well done — keep that rhythm.",
+        "weeklySlowing": "Last week dropped a long way from the week before. If you are busy, lower the goal rather than drop it.",
+        "weeklyImproving": "You studied noticeably more last week. Good momentum.",
+        "weeklyReview": "Plenty of missed questions are waiting. Reviewing before new lessons makes them stick.",
+        "weeklyKeepGoing": "Still on course. Just keep it steady."
+      },
+      "pushTitle": "📊 Your week",
+      "pushBody": "Last week: {minutes} min · {lessons} lessons · {percent}% of goal"
+    }
+  },
   "templates": {
     "title": "Ready-made roadmaps",
     "subtitle": "Not sure what to study? Start from a roadmap with every lesson already planned — you can still edit anything.",
