@@ -45,6 +45,7 @@ import { LessonDialog } from "./lesson-dialog";
 type T = Dictionary["roadmaps"];
 type TP = Dictionary["progress"];
 type TV = Dictionary["lessonView"];
+type TPr = Dictionary["practice"];
 
 // Draggable ids are namespaced so phases, lessons and drop zones never collide.
 const P = (id: string) => `p:${id}`;
@@ -81,12 +82,14 @@ export function RoadmapBoard({
   t,
   tp,
   tv,
+  tpr,
 }: {
   roadmapId: string;
   phases: PhaseWithLessons[];
   t: T;
   tp: TP;
   tv: TV;
+  tpr: TPr;
 }) {
   // Local copy for optimistic drag & drop; re-sync whenever the server sends fresh data.
   const [prevPhases, setPrevPhases] = useState(phases);
@@ -237,6 +240,7 @@ export function RoadmapBoard({
               phase={phase}
               t={t}
               tp={tp}
+              tpr={tpr}
               onEditLesson={setEditing}
               onToggleDone={toggleDone}
               onError={() => setError(t.saveError)}
@@ -259,6 +263,7 @@ export function RoadmapBoard({
           lesson={editing}
           t={t}
           tv={tv}
+          tp={tpr}
           markDoneLabel={tp.markDone}
           onMarkDone={() => setCompleting(editing)}
           onClose={() => setEditing(null)}
@@ -295,6 +300,7 @@ function SortablePhase({
   index,
   t,
   tp,
+  tpr,
   onEditLesson,
   onToggleDone,
   onError,
@@ -303,6 +309,7 @@ function SortablePhase({
   index: number;
   t: T;
   tp: TP;
+  tpr: TPr;
   onEditLesson: (l: LessonItem) => void;
   onToggleDone: (l: LessonItem) => void;
   onError: () => void;
@@ -394,6 +401,7 @@ function SortablePhase({
               lesson={lesson}
               t={t}
               tp={tp}
+              tpr={tpr}
               onEdit={onEditLesson}
               onToggleDone={onToggleDone}
               onError={onError}
@@ -424,6 +432,7 @@ function SortableLesson({
   lesson,
   t,
   tp,
+  tpr,
   onEdit,
   onToggleDone,
   onError,
@@ -431,6 +440,7 @@ function SortableLesson({
   lesson: LessonItem;
   t: T;
   tp: TP;
+  tpr: TPr;
   onEdit: (l: LessonItem) => void;
   onToggleDone: (l: LessonItem) => void;
   onError: () => void;
@@ -468,6 +478,16 @@ function SortableLesson({
       >
         {lesson.title}
       </button>
+      {lesson.exerciseCount > 0 && (
+        <span
+          className={`shrink-0 text-xs tabular-nums ${
+            lesson.practiceCorrect >= lesson.exerciseCount ? "text-emerald-600 dark:text-emerald-400" : "text-zinc-500"
+          }`}
+          title={`${tpr.title}: ${lesson.practiceCorrect}/${lesson.exerciseCount}`}
+        >
+          📝 {lesson.practiceCorrect}/{lesson.exerciseCount}
+        </span>
+      )}
       {lesson.resourceUrls.length > 0 && (
         <span className="hidden shrink-0 text-xs text-zinc-500 sm:inline">
           🔗 {format(t.lesson.links, { n: lesson.resourceUrls.length })}

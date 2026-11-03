@@ -1,5 +1,6 @@
-import { buildLesson, type BuiltLesson } from "./build";
+import { buildLesson, type BuiltLesson, type TemplateExerciseInput } from "./build";
 import { everydayA0Vi } from "./everyday-a0-vi";
+import { everydayA0ViExercises } from "./everyday-a0-vi-exercises";
 
 export type RoadmapTemplate = {
   id: string;
@@ -16,11 +17,13 @@ export type RoadmapTemplate = {
 const make = (
   meta: Omit<RoadmapTemplate, "phases">,
   src: { phases: { title: string; lessons: Parameters<typeof buildLesson>[0][] }[] },
+  /** Practice questions kept in a separate file, matched to lessons by title. */
+  exercises: Record<string, TemplateExerciseInput[]> = {},
 ): RoadmapTemplate => ({
   ...meta,
   phases: src.phases.map((p) => ({
     title: p.title,
-    lessons: p.lessons.map((l) => buildLesson(l, meta.minutesPerDay)),
+    lessons: p.lessons.map((l) => buildLesson({ ...l, ex: l.ex ?? exercises[l.title] }, meta.minutesPerDay)),
   })),
 });
 
@@ -36,8 +39,19 @@ export const templates: RoadmapTemplate[] = [
       minutesPerDay: 30,
     },
     everydayA0Vi,
+    everydayA0ViExercises,
   ),
 ];
+
+/**
+ * Questions for a lesson title, across every template. Lets roadmaps created before the
+ * practice feature existed pick up their questions by title.
+ */
+export const exercisesForTitle = (title: string): TemplateExerciseInput[] =>
+  everydayA0ViExercises[title] ?? [];
+
+export const exerciseCountOf = (t: RoadmapTemplate) =>
+  t.phases.reduce((s, p) => s + p.lessons.reduce((n, l) => n + l.exercises.length, 0), 0);
 
 export const getTemplate = (id: string) => templates.find((t) => t.id === id) ?? null;
 

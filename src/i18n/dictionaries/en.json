@@ -15,6 +15,7 @@
     "menu": "Account menu",
     "schedule": "Schedule",
     "progress": "Progress",
+    "review": "Review",
     "settings": "Settings"
   },
   "home": {
@@ -208,6 +209,56 @@
     "allDone": "🎉 Roadmap complete! Amazing work.",
     "completedOn": "Completed {date}",
     "error": "Couldn't update. Please try again."
+  },
+  "practice": {
+    "title": "Practice",
+    "lessonHint": "Answer a few questions to check what stuck. Anything you get wrong goes into your review list.",
+    "start": "Start practice",
+    "again": "Practise again",
+    "loading": "Loading questions…",
+    "none": "This lesson has no questions yet.",
+    "error": "Could not send your answer. Please try again.",
+    "questionOf": "Question {n} of {total}",
+    "yourAnswer": "Your answer",
+    "check": "Check",
+    "right": "Correct!",
+    "wrong": "Not quite",
+    "answerIs": "The answer is:",
+    "next": "Next →",
+    "seeResult": "See result",
+    "quit": "Later",
+    "saving": "Saving…",
+    "score": "{correct} of {total} correct",
+    "wrongQueued": "The ones you missed were added to Review.",
+    "bands": {
+      "perfect": "Perfect! You have this one down. 🎉",
+      "good": "Good work! Review the few you missed.",
+      "review": "No worries — read the lesson again and retry. Mistakes are how it sticks."
+    },
+    "review": {
+      "title": "Review your mistakes",
+      "subtitle": "Questions you got wrong come back just before you would forget them.",
+      "ready": "{n} questions to review today",
+      "readyHint": "About 2–3 minutes.",
+      "start": "Review now",
+      "finish": "Done",
+      "none": "Nothing to review yet",
+      "noneHint": "Practise inside your lessons — anything you miss shows up here.",
+      "caughtUp": "All caught up for today!",
+      "laterHint": "{n} questions will come back over the next few days.",
+      "toRoadmaps": "Open a roadmap to practise",
+      "howItWorks": "How it works: a wrong answer comes back the same day. Each correct answer pushes it out 1 day, then 3, then 7. Three in a row and it is considered learned.",
+      "card": "You have {n} questions to review",
+      "cardHint": "Reviewing your mistakes sticks better than rushing ahead.",
+      "cardCta": "Review now →"
+    },
+    "seed": {
+      "title": "{n} lessons are missing their practice questions",
+      "hint": "This roadmap was created before practice existed. Add the questions to its lessons.",
+      "cta": "Add questions",
+      "adding": "Adding…",
+      "added": "Added {n} questions. Open a lesson to try them."
+    }
   },
   "stats": {
     "streak": "Streak",

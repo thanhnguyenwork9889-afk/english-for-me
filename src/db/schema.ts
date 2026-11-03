@@ -77,6 +77,52 @@ export const lessons = pgTable("lessons", {
   createdAt: createdAt(),
 }, (t) => [index("lessons_phase_idx").on(t.phaseId)]);
 
+// ========== PRACTICE ==========
+// Questions attached to a lesson. The answer never leaves the server: grading happens
+// in a server action, so the client only ever sees prompt + options.
+export const exercises = pgTable("exercises", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  lessonId: uuid("lesson_id").notNull().references(() => lessons.id, { onDelete: "cascade" }),
+  kind: text("kind").notNull(), // mcq (pick an option) | fill (type the answer)
+  prompt: text("prompt").notNull(),
+  options: text("options").array(), // mcq only
+  /** mcq: the correct option's text. fill: accepted answers separated by "|". */
+  answer: text("answer").notNull(),
+  explanation: text("explanation"),
+  orderIndex: integer("order_index").notNull(),
+}, (t) => [
+  index("exercises_lesson_idx").on(t.lessonId),
+  // Lets the template seeder re-run without duplicating questions.
+  unique("exercises_lesson_order_uq").on(t.lessonId, t.orderIndex),
+]);
+
+/** Append-only log of every answer, so progress and review can be rebuilt from it. */
+export const exerciseAttempts = pgTable("exercise_attempts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  exerciseId: uuid("exercise_id").notNull().references(() => exercises.id, { onDelete: "cascade" }),
+  answer: text("answer").notNull(),
+  correct: boolean("correct").notNull(),
+  answeredAt: timestamp("answered_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [index("attempts_user_idx").on(t.userId, t.answeredAt), index("attempts_exercise_idx").on(t.exerciseId)]);
+
+/**
+ * The review queue: a row exists only while a question still needs revisiting.
+ * A wrong answer puts it in box 0 (due now); each correct answer moves it up a box
+ * (+1, +3, +7 days) and the row is deleted once it graduates.
+ */
+export const reviewItems = pgTable("review_items", {
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  exerciseId: uuid("exercise_id").notNull().references(() => exercises.id, { onDelete: "cascade" }),
+  box: smallint("box").notNull().default(0),
+  dueAt: timestamp("due_at", { withTimezone: true }).notNull().defaultNow(),
+  wrongCount: integer("wrong_count").notNull().default(1),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [
+  primaryKey({ columns: [t.userId, t.exerciseId] }),
+  index("review_due_idx").on(t.userId, t.dueAt),
+]);
+
 // ========== PROGRESS ==========
 export const lessonProgress = pgTable("lesson_progress", {
   id: uuid("id").primaryKey().defaultRandom(),

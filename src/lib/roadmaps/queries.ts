@@ -2,6 +2,7 @@ import "server-only";
 import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { lessonProgress, lessons, phases, roadmaps } from "@/db/schema";
+import { getRoadmapPractice } from "@/lib/practice/queries";
 
 export type RoadmapSummary = {
   id: string;
@@ -27,6 +28,9 @@ export type LessonItem = {
   difficulty: number | null;
   actualMinutes: number | null;
   progressNote: string | null;
+  /** Practice questions attached to this lesson, and how many have ever been answered right. */
+  exerciseCount: number;
+  practiceCorrect: number;
 };
 
 export type PhaseWithLessons = { id: string; title: string; lessons: LessonItem[] };
@@ -94,6 +98,8 @@ export async function getRoadmapTree(userId: string, roadmapId: string): Promise
         .orderBy(asc(lessons.orderIndex), asc(lessons.createdAt))
     : [];
 
+  const practice = await getRoadmapPractice(userId, roadmapId);
+
   return {
     id: roadmap.id,
     title: roadmap.title,
@@ -117,6 +123,8 @@ export async function getRoadmapTree(userId: string, roadmapId: string): Promise
           difficulty: l.difficulty,
           actualMinutes: l.actualMinutes,
           progressNote: l.progressNote,
+          exerciseCount: practice.get(l.id)?.total ?? 0,
+          practiceCorrect: practice.get(l.id)?.correct ?? 0,
         })),
     })),
   };

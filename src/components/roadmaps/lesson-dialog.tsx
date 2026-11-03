@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
+import { ExerciseRunner } from "@/components/practice/exercise-runner";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { loadLessonPractice } from "@/lib/practice/actions";
+import type { PracticeQuestion } from "@/lib/practice/queries";
 import { updateLesson } from "@/lib/roadmaps/actions";
 import type { LessonItem } from "@/lib/roadmaps/queries";
 import { btnGhost, btnPrimary, inputCls, labelCls, textareaCls } from "@/components/ui";
@@ -32,6 +35,7 @@ export function LessonDialog({
   onMarkDone,
   t,
   tv,
+  tp,
   markDoneLabel,
 }: {
   lesson: LessonItem;
@@ -40,17 +44,32 @@ export function LessonDialog({
   onMarkDone?: () => void;
   t: Dictionary["roadmaps"];
   tv: Dictionary["lessonView"];
+  tp: Dictionary["practice"];
   markDoneLabel: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const hasGuide = Boolean(lesson.contentMd?.trim() || lesson.resourceUrls.length);
-  const [mode, setMode] = useState<"view" | "edit">(hasGuide ? "view" : "edit");
+  const [mode, setMode] = useState<"view" | "edit" | "practice">(hasGuide ? "view" : "edit");
+  const [questions, setQuestions] = useState<PracticeQuestion[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
   useEffect(() => {
     ref.current?.showModal();
   }, []);
+
+  function startPractice() {
+    setError(null);
+    startTransition(async () => {
+      const list = await loadLessonPractice(lesson.id);
+      if (list.length === 0) {
+        setError(tp.none);
+        return;
+      }
+      setQuestions(list);
+      setMode("practice");
+    });
+  }
 
   function submit(formData: FormData) {
     setError(null);
@@ -77,7 +96,20 @@ export function LessonDialog({
       onClose={onClose}
       className="m-auto max-h-[calc(100dvh-2rem)] w-[min(36rem,calc(100vw-2rem))] rounded-2xl bg-background p-0 text-foreground shadow-xl backdrop:bg-black/40"
     >
-      {mode === "view" ? (
+      {mode === "practice" ? (
+        <div className="space-y-5 p-5">
+          <div>
+            <h2 className="text-lg font-semibold">{tp.title}</h2>
+            <p className="mt-0.5 text-sm text-zinc-500">{lesson.title}</p>
+          </div>
+          <ExerciseRunner
+            questions={questions ?? []}
+            t={tp}
+            closeLabel={tv.close}
+            onClose={() => ref.current?.close()}
+          />
+        </div>
+      ) : mode === "view" ? (
         <div className="space-y-5 p-5">
           <div>
             <h2 className="text-lg font-semibold">{lesson.title}</h2>
@@ -117,6 +149,20 @@ export function LessonDialog({
               </ul>
             </div>
           )}
+
+          {lesson.exerciseCount > 0 && (
+            <div className="rounded-xl border border-indigo-200 bg-indigo-50/60 p-4 dark:border-indigo-500/30 dark:bg-indigo-500/10">
+              <p className="text-sm font-semibold">
+                📝 {tp.title} · {lesson.practiceCorrect}/{lesson.exerciseCount}
+              </p>
+              <p className="mt-0.5 text-sm text-zinc-600 dark:text-zinc-400">{tp.lessonHint}</p>
+              <button type="button" className={`${btnPrimary} mt-3`} onClick={startPractice} disabled={pending}>
+                {pending ? tp.loading : lesson.practiceCorrect > 0 ? tp.again : tp.start}
+              </button>
+            </div>
+          )}
+
+          {error && <p className="text-sm text-red-600">{error}</p>}
 
           <div className="flex flex-wrap justify-between gap-2">
             <button type="button" className={btnGhost} onClick={() => setMode("edit")}>

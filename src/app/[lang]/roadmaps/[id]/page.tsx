@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { z } from "zod";
 import { AppHeader } from "@/components/app-header";
+import { SeedExercises } from "@/components/practice/seed-exercises";
 import { RoadmapBoard } from "@/components/roadmaps/roadmap-board";
 import { RoadmapHeader } from "@/components/roadmaps/roadmap-header";
 import type { Locale } from "@/i18n/config";
@@ -11,6 +12,7 @@ import { requireUserId } from "@/lib/auth";
 import { getRoadmapTree } from "@/lib/roadmaps/queries";
 import { hoursPerWeekNeeded, minutesToHours } from "@/lib/roadmaps/stats";
 import { getRoadmapForecast } from "@/lib/schedule/queries";
+import { exercisesForTitle } from "@/lib/templates";
 import { ScheduleCard } from "@/components/schedule/schedule-card";
 
 export default async function RoadmapPage({ params }: PageProps<"/[lang]/roadmaps/[id]">) {
@@ -26,7 +28,7 @@ export default async function RoadmapPage({ params }: PageProps<"/[lang]/roadmap
         </Link>
         {/* params + session are request-time data: await them inside Suspense. */}
         <Suspense fallback={<p className="mt-6 text-zinc-500">{t.loading}</p>}>
-          <RoadmapDetail params={params} locale={locale} t={t} tp={dict.progress} tv={dict.lessonView} ts={dict.schedule} />
+          <RoadmapDetail params={params} locale={locale} t={t} tp={dict.progress} tv={dict.lessonView} tpr={dict.practice} ts={dict.schedule} />
         </Suspense>
       </main>
     </>
@@ -39,6 +41,7 @@ async function RoadmapDetail({
   t,
   tp,
   tv,
+  tpr,
   ts,
 }: {
   params: Promise<{ id: string }>;
@@ -46,6 +49,7 @@ async function RoadmapDetail({
   t: Dictionary["roadmaps"];
   tp: Dictionary["progress"];
   tv: Dictionary["lessonView"];
+  tpr: Dictionary["practice"];
   ts: Dictionary["schedule"];
 }) {
   const { id } = await params;
@@ -57,6 +61,10 @@ async function RoadmapDetail({
 
   const allLessons = roadmap.phases.flatMap((p) => p.lessons);
   const totalMinutes = allLessons.reduce((s, l) => s + l.estimatedMinutes, 0);
+  // Lessons from a template that predate the practice feature: offer to attach questions.
+  const missingExercises = allLessons.filter(
+    (l) => l.exerciseCount === 0 && exercisesForTitle(l.title).length > 0,
+  ).length;
 
   return (
     <div className="mt-4 space-y-8">
@@ -79,7 +87,8 @@ async function RoadmapDetail({
         locale={locale}
         t={ts}
       />
-      <RoadmapBoard roadmapId={roadmap.id} phases={roadmap.phases} t={t} tp={tp} tv={tv} />
+      {missingExercises > 0 && <SeedExercises roadmapId={roadmap.id} missing={missingExercises} t={tpr} />}
+      <RoadmapBoard roadmapId={roadmap.id} phases={roadmap.phases} t={t} tp={tp} tv={tv} tpr={tpr} />
     </div>
   );
 }

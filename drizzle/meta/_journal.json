@@ -29,6 +29,13 @@
       "when": 1793717289920,
       "tag": "0003_yielding_darkstar",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793719660176,
+      "tag": "0004_handy_stephen_strange",
+      "breakpoints": true
     }
   ]
 }

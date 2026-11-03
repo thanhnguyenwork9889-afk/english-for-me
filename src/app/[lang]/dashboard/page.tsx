@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AppHeader } from "@/components/app-header";
 import { ContinueCard } from "@/components/progress/continue-card";
+import { btnPrimary } from "@/components/ui";
 import { ProgressMeter } from "@/components/progress/progress-meter";
 import { StatTile } from "@/components/progress/stat-tile";
 import { WeekStrip } from "@/components/progress/week-strip";
@@ -10,6 +11,7 @@ import { format, type Locale } from "@/i18n/config";
 import { getDictionary, getLocale, type Dictionary } from "@/i18n/get-dictionary";
 import { getUserEmail, requireUserId } from "@/lib/auth";
 import { getProfile, profileLabel } from "@/lib/profile/queries";
+import { getReviewCounts } from "@/lib/practice/queries";
 import { getLearningStats, getNextLesson } from "@/lib/progress/queries";
 import { dayLabel } from "@/lib/schedule/format";
 import { getAgenda } from "@/lib/schedule/queries";
@@ -35,13 +37,14 @@ export default async function DashboardPage() {
 
 async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const userId = await requireUserId(locale);
-  const [profile, email, roadmaps, stats, next, agenda] = await Promise.all([
+  const [profile, email, roadmaps, stats, next, agenda, review] = await Promise.all([
     getProfile(userId),
     getUserEmail(),
     listRoadmaps(userId),
     getLearningStats(userId),
     getNextLesson(userId),
     getAgenda(userId, 7),
+    getReviewCounts(userId),
   ]);
   const upcoming = agenda.items.find((i) => !i.past);
   const nextSession = upcoming
@@ -92,6 +95,21 @@ async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionar
         </StatTile>
         <StatTile icon="📚" label={ts.total} value={String(stats.totalCompleted)} caption={ts.allTime} />
       </section>
+
+      {/* Only when something is actually due — an always-present nag stops being read. */}
+      {review.due > 0 && (
+        <section className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-500/30 dark:bg-amber-500/10">
+          <div>
+            <p className="font-semibold">
+              <span aria-hidden>🔁</span> {format(dict.practice.review.card, { n: review.due })}
+            </p>
+            <p className="mt-0.5 text-sm text-zinc-600 dark:text-zinc-400">{dict.practice.review.cardHint}</p>
+          </div>
+          <Link href={`/${locale}/review`} className={btnPrimary}>
+            {dict.practice.review.cardCta}
+          </Link>
+        </section>
+      )}
 
       <section className="grid gap-6 md:grid-cols-[1fr_1.2fr]">
         <div>

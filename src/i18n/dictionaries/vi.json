@@ -15,6 +15,7 @@
     "menu": "Menu tài khoản",
     "schedule": "Lịch học",
     "progress": "Tiến độ",
+    "review": "Ôn tập",
     "settings": "Cài đặt"
   },
   "home": {
@@ -208,6 +209,56 @@
     "allDone": "🎉 Đã hoàn thành lộ trình! Tuyệt vời.",
     "completedOn": "Hoàn thành {date}",
     "error": "Không cập nhật được. Vui lòng thử lại."
+  },
+  "practice": {
+    "title": "Bài tập",
+    "lessonHint": "Trả lời vài câu để kiểm tra xem bạn đã nhớ chưa. Câu nào sai sẽ được đưa vào danh sách ôn lại.",
+    "start": "Bắt đầu làm bài",
+    "again": "Làm lại bài tập",
+    "loading": "Đang tải câu hỏi…",
+    "none": "Bài học này chưa có câu hỏi nào.",
+    "error": "Không gửi được câu trả lời. Vui lòng thử lại.",
+    "questionOf": "Câu {n}/{total}",
+    "yourAnswer": "Câu trả lời của bạn",
+    "check": "Kiểm tra",
+    "right": "Chính xác!",
+    "wrong": "Chưa đúng",
+    "answerIs": "Đáp án đúng:",
+    "next": "Câu tiếp →",
+    "seeResult": "Xem kết quả",
+    "quit": "Để sau",
+    "saving": "Đang lưu…",
+    "score": "Đúng {correct}/{total} câu",
+    "wrongQueued": "Những câu sai đã được thêm vào mục Ôn tập.",
+    "bands": {
+      "perfect": "Hoàn hảo! Bạn đã nắm vững bài này. 🎉",
+      "good": "Khá tốt! Ôn lại vài câu sai là ổn.",
+      "review": "Đừng lo, học lại bài rồi làm lại nhé. Sai là cách để nhớ lâu."
+    },
+    "review": {
+      "title": "Ôn lại câu sai",
+      "subtitle": "Những câu bạn từng trả lời sai sẽ quay lại đúng lúc bạn gần quên.",
+      "ready": "Có {n} câu cần ôn hôm nay",
+      "readyHint": "Chỉ mất 2–3 phút.",
+      "start": "Ôn ngay",
+      "finish": "Xong",
+      "none": "Chưa có câu nào cần ôn",
+      "noneHint": "Làm bài tập trong các bài học, câu nào sai sẽ xuất hiện ở đây.",
+      "caughtUp": "Hôm nay bạn đã ôn hết!",
+      "laterHint": "Còn {n} câu sẽ quay lại trong những ngày tới.",
+      "toRoadmaps": "Mở lộ trình để làm bài tập",
+      "howItWorks": "Cách hoạt động: trả lời sai → ôn lại ngay hôm nay. Mỗi lần trả lời đúng, câu đó giãn ra 1 ngày, 3 ngày, rồi 7 ngày. Đúng 3 lần liên tiếp thì câu đó coi như đã thuộc.",
+      "card": "Bạn có {n} câu cần ôn lại",
+      "cardHint": "Ôn lại câu sai giúp nhớ lâu hơn học thêm bài mới.",
+      "cardCta": "Ôn ngay →"
+    },
+    "seed": {
+      "title": "{n} bài học có bài tập chưa được nạp",
+      "hint": "Lộ trình này được tạo trước khi app có phần bài tập. Bấm để thêm câu hỏi vào các bài học.",
+      "cta": "Nạp bài tập",
+      "adding": "Đang nạp…",
+      "added": "Đã thêm {n} câu hỏi. Mở một bài học để làm thử."
+    }
   },
   "stats": {
     "streak": "Chuỗi ngày học",
