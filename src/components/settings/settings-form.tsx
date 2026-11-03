@@ -4,6 +4,8 @@ import { useActionState, useState } from "react";
 import { btnPrimary, inputCls, labelCls } from "@/components/ui";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { saveLearningSettings, type SettingsState } from "@/lib/schedule/actions";
+import { format } from "@/i18n/config";
+import { quietWarning } from "@/lib/reminders/quiet-hours";
 import { PushDevice } from "./push-device";
 
 export type SettingsInitial = {
@@ -18,16 +20,23 @@ export type SettingsInitial = {
 export function SettingsForm({
   initial,
   zones,
+  studyTimes,
   lang,
   t,
 }: {
   initial: SettingsInitial;
   zones: string[];
+  /** Active schedules' start times, to warn when do-not-disturb would block them. */
+  studyTimes: string[];
   lang: string;
   t: Dictionary["settings"];
 }) {
   const [state, action, pending] = useActionState<SettingsState, FormData>(saveLearningSettings, {});
   const [dirty, setDirty] = useState(false);
+  const [quietStart, setQuietStart] = useState(initial.quietHoursStart);
+  const [quietEnd, setQuietEnd] = useState(initial.quietHoursEnd);
+  const [remindBefore, setRemindBefore] = useState(initial.remindBeforeMinutes);
+  const warning = quietWarning(quietStart, quietEnd, studyTimes, remindBefore);
   const options = zones.includes(initial.timezone) ? zones : [initial.timezone, ...zones];
   const remindValues = Object.keys(t.remindOptions).map(Number);
   if (!remindValues.includes(initial.remindBeforeMinutes)) remindValues.push(initial.remindBeforeMinutes);
@@ -85,7 +94,8 @@ export function SettingsForm({
             <select
               id="st-before"
               name="remindBeforeMinutes"
-              defaultValue={initial.remindBeforeMinutes}
+              value={remindBefore}
+              onChange={(e) => setRemindBefore(Number(e.target.value))}
               className={`${inputCls} w-48`}
             >
               {remindValues.sort((a, b) => a - b).map((m) => (
@@ -100,12 +110,33 @@ export function SettingsForm({
             <span className={labelCls}>{t.quietHours}</span>
             <div className="flex flex-wrap items-center gap-2 text-sm">
               <label className="sr-only" htmlFor="st-qs">{t.from}</label>
-              <input id="st-qs" name="quietHoursStart" type="time" defaultValue={initial.quietHoursStart} className={`${inputCls} w-32`} />
+              <input id="st-qs" name="quietHoursStart" type="time" value={quietStart} onChange={(e) => setQuietStart(e.target.value)} className={`${inputCls} w-32`} />
               <span aria-hidden>→</span>
               <label className="sr-only" htmlFor="st-qe">{t.to}</label>
-              <input id="st-qe" name="quietHoursEnd" type="time" defaultValue={initial.quietHoursEnd} className={`${inputCls} w-32`} />
+              <input id="st-qe" name="quietHoursEnd" type="time" value={quietEnd} onChange={(e) => setQuietEnd(e.target.value)} className={`${inputCls} w-32`} />
+              {(quietStart || quietEnd) && (
+                <button
+                  type="button"
+                  className="text-sm text-indigo-700 hover:underline dark:text-indigo-300"
+                  onClick={() => {
+                    setQuietStart("");
+                    setQuietEnd("");
+                    setDirty(true);
+                  }}
+                >
+                  ✕
+                </button>
+              )}
             </div>
             <p className="mt-1 text-xs text-zinc-500">{t.quietHoursHint}</p>
+            {warning && (
+              <p role="alert" className="mt-2 rounded-lg bg-amber-50 p-2 text-sm text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
+                ⚠️{" "}
+                {warning.kind === "blocks"
+                  ? format(t.quietWarnBlocks, { time: warning.time })
+                  : format(t.quietWarnLong, { h: warning.hours })}
+              </p>
+            )}
           </div>
         </fieldset>
 

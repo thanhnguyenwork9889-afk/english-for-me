@@ -19,7 +19,11 @@ self.addEventListener("push", (event) => {
       badge: "/badge-96.png",
       tag: data.tag || undefined,
       renotify: Boolean(data.tag),
-      vibrate: [100, 50, 100],
+      // Make sure the OS may play its sound; desktop keeps study reminders on screen until dismissed.
+      // (Sound/vibration on phones is controlled by the OS notification settings for this app.)
+      silent: false,
+      requireInteraction: Boolean(data.sticky),
+      vibrate: [200, 100, 200],
       data: { url: data.url || "/" },
     }),
   );

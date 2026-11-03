@@ -327,8 +327,8 @@
       "30": "30 phút",
       "60": "1 tiếng"
     },
-    "quietHours": "Giờ yên tĩnh (tuỳ chọn)",
-    "quietHoursHint": "Không gửi nhắc nhở trong khoảng này, vd. 22:00 → 07:00.",
+    "quietHours": "Không làm phiền (tuỳ chọn)",
+    "quietHoursHint": "KHÔNG gửi nhắc nhở trong khoảng này — vd. giờ ngủ (22:30 → 07:00). Nhắc nhở đến theo giờ trong lịch học, không phải giờ ở đây.",
     "from": "Từ",
     "to": "Đến",
     "device": "Thiết bị này",
@@ -343,6 +343,8 @@
     "denied": "Trình duyệt đang chặn thông báo của trang này. Hãy cho phép trong phần cài đặt trang web.",
     "unsupported": "Trình duyệt này không hỗ trợ thông báo đẩy.",
     "iosHint": "Trên iPhone/iPad: mở trang bằng Safari → nút Chia sẻ → Thêm vào MH chính, rồi mở app từ màn hình chính và bật thông báo.",
-    "working": "Vui lòng chờ…"
+    "working": "Vui lòng chờ…",
+    "quietWarnLong": "Khoảng này dài {h} tiếng — bạn sẽ gần như không nhận được nhắc nhở nào.",
+    "quietWarnBlocks": "Khoảng này trùng giờ học {time} của bạn, nên nhắc nhở lúc đó sẽ không được gửi."
   }
 }

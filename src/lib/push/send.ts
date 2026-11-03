@@ -4,7 +4,8 @@ import webpush, { WebPushError } from "web-push";
 import { db } from "@/db";
 import { pushSubscriptions } from "@/db/schema";
 
-export type PushPayload = { title: string; body: string; url: string; tag?: string };
+/** `sticky`: keep the notification on screen until dismissed (desktop browsers). */
+export type PushPayload = { title: string; body: string; url: string; tag?: string; sticky?: boolean };
 
 let configured = false;
 function configure(): boolean {

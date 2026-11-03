@@ -5,6 +5,7 @@ import type { Locale } from "@/i18n/config";
 import { getDictionary, getLocale, type Dictionary } from "@/i18n/get-dictionary";
 import { requireUserId } from "@/lib/auth";
 import { getUserPrefs } from "@/lib/progress/queries";
+import { getStudyTimes } from "@/lib/schedule/queries";
 
 export default async function SettingsPage() {
   const [locale, dict] = await Promise.all([getLocale(), getDictionary()]);
@@ -26,7 +27,7 @@ export default async function SettingsPage() {
 
 async function SettingsContent({ locale, t }: { locale: Locale; t: Dictionary["settings"] }) {
   const userId = await requireUserId(locale);
-  const prefs = await getUserPrefs(userId);
+  const [prefs, studyTimes] = await Promise.all([getUserPrefs(userId), getStudyTimes(userId)]);
   const zones = Intl.supportedValuesOf("timeZone");
-  return <SettingsForm initial={prefs} zones={zones} lang={locale} t={t} />;
+  return <SettingsForm initial={prefs} zones={zones} studyTimes={studyTimes} lang={locale} t={t} />;
 }

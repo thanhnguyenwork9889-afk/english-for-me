@@ -327,8 +327,8 @@
       "30": "30 min before",
       "60": "1 hour before"
     },
-    "quietHours": "Quiet hours (optional)",
-    "quietHoursHint": "No reminders between these times, e.g. 22:00 → 07:00.",
+    "quietHours": "Do not disturb (optional)",
+    "quietHoursHint": "NO reminders are sent during this window — e.g. while you sleep (22:30 → 07:00). Reminders arrive at your study-schedule time, not here.",
     "from": "From",
     "to": "To",
     "device": "This device",
@@ -343,6 +343,8 @@
     "denied": "Notifications are blocked in your browser settings for this site.",
     "unsupported": "This browser doesn't support push notifications.",
     "iosHint": "On iPhone/iPad: open this site in Safari → Share → Add to Home Screen, then open the app from the home screen and turn on notifications.",
-    "working": "Please wait…"
+    "working": "Please wait…",
+    "quietWarnLong": "This window is {h} hours long — you'll almost never get reminders.",
+    "quietWarnBlocks": "This window blocks your study time {time}, so that reminder won't be sent."
   }
 }

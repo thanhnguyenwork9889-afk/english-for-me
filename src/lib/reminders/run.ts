@@ -82,8 +82,23 @@ export async function runReminders(exec: Executor = db): Promise<ReminderRunResu
   let sent = 0;
   let skipped = 0;
   for (const row of due) {
-    if (row.studied_today || inQuietHours(row.local_now, row.quiet_start, row.quiet_end)) {
+    const skipReason = row.studied_today
+      ? "skipped_studied_today"
+      : inQuietHours(row.local_now, row.quiet_start, row.quiet_end)
+        ? "skipped_quiet_hours"
+        : null;
+    if (skipReason) {
       skipped++;
+      // Keep a trace so "why didn't I get a reminder?" can be answered later.
+      await exec.insert(notifications).values({
+        userId: row.user_id,
+        type: "reminder",
+        channel: "push",
+        title: `${row.local_time} – ${row.roadmap_title}`,
+        body: skipReason,
+        refId: row.session_id,
+        status: skipReason,
+      });
       continue;
     }
     const vi = row.locale !== "en";
@@ -94,6 +109,7 @@ export async function runReminders(exec: Executor = db): Promise<ReminderRunResu
       body: vi ? `Bài hôm nay: ${lessonPart}` : `Today's lesson: ${lessonPart}`,
       url: `/${vi ? "vi" : "en"}/roadmaps/${row.roadmap_id}`,
       tag: `session-${row.session_id}`,
+      sticky: true,
     };
     const res = await sendPushToUser(row.user_id, payload);
     if (res.sent > 0) sent++;

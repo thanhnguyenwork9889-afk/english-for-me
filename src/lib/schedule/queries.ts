@@ -116,3 +116,12 @@ export async function getRoadmapForecast(userId: string, roadmapId: string) {
   const now = nowIn(timezone);
   return { schedule, finishDate: projectFinishDate(schedule, remaining, now), today: now.date };
 }
+
+/** Distinct "HH:MM" start times of the user's active schedules. */
+export async function getStudyTimes(userId: string): Promise<string[]> {
+  const rows = await db
+    .select({ startTime: studySchedules.startTime })
+    .from(studySchedules)
+    .where(and(eq(studySchedules.userId, userId), eq(studySchedules.active, true)));
+  return [...new Set(rows.map((r) => r.startTime.slice(0, 5)))].sort();
+}
