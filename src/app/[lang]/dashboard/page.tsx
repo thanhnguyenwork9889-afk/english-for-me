@@ -95,7 +95,12 @@ async function UserDashboard({ locale, dict }: { locale: Locale; dict: Dictionar
 
       <section className="grid gap-6 md:grid-cols-[1fr_1.2fr]">
         <div>
-          <h2 className="mb-3 text-lg font-semibold">{ts.weekActivity}</h2>
+          <div className="mb-3 flex items-baseline justify-between gap-3">
+            <h2 className="text-lg font-semibold">{ts.weekActivity}</h2>
+            <Link href={`/${locale}/progress`} className="text-sm font-medium text-indigo-600 hover:underline">
+              {dict.insights.title} →
+            </Link>
+          </div>
           <WeekStrip days={week.days} today={stats.today} planned={agenda.items.map((i) => i.date)} t={ts} />
         </div>
         <div>

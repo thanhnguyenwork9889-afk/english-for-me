@@ -20,6 +20,7 @@ export async function AppHeader() {
         <Link href={`/${locale}/dashboard`} className={navLink}>{dict.nav.dashboard}</Link>
         <Link href={`/${locale}/roadmaps`} className={navLink}>{dict.nav.roadmaps}</Link>
         <Link href={`/${locale}/schedule`} className={navLink}>{dict.nav.schedule}</Link>
+        <Link href={`/${locale}/progress`} className={navLink}>{dict.nav.progress}</Link>
       </nav>
       {/* The session is read per request, so the menu streams in behind Suspense. */}
       <Suspense fallback={<span className="size-9 rounded-full bg-black/5 dark:bg-white/10" />}>
@@ -54,6 +55,7 @@ async function AccountMenu({ locale, dict }: { locale: Locale; dict: Dictionary 
         { href: `/${locale}/dashboard`, label: dict.nav.dashboard, mobileOnly: true },
         { href: `/${locale}/roadmaps`, label: dict.nav.roadmaps, mobileOnly: true },
         { href: `/${locale}/schedule`, label: dict.nav.schedule, mobileOnly: true },
+        { href: `/${locale}/progress`, label: dict.nav.progress, mobileOnly: true },
         { href: `/${locale}/profile`, label: dict.nav.profile },
         { href: `/${locale}/settings`, label: dict.nav.settings },
       ]}
